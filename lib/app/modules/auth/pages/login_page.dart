@@ -113,7 +113,7 @@ class LoginPage extends GetView<AuthController> {
                     ),
                     InkWell(
                       onTap: () {
-                        Get.offNamed(Routes.REGISTRAR);
+                        Get.toNamed(Routes.REGISTRAR);
                       },
                       child: Text('Eu não tenho conta', style: TextStyle(
                         decoration: TextDecoration.underline,

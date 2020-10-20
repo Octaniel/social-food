@@ -18,7 +18,7 @@ class BottomNavWidget extends GetWidget<HomeController> {
         ),
         child: Center(
           child: Text(
-            'Anucio',
+            'Espaço para publicidade',
             style: TextStyle(
               fontFamily: 'Segoe UI',
               fontSize: 20,

@@ -20,14 +20,18 @@ class ComentariosView extends GetView<HomeController> {
         id: 'listaComentario',
         builder: (_) {
           // if (!controller.carregando) scrollToBottom();
-          return Visibility(
-            replacement: LoaderWidget(),
-            visible: !controller.carregando,
-            child: Visibility(
-              visible: controller.comentarios.length == 0,
-              replacement: comComentario(),
-              child: semComentario(),
-            ),
+          return ListView(
+            children: [
+              Visibility(
+                replacement: LoaderWidget(),
+                visible: !controller.carregando,
+                child: Visibility(
+                  visible: controller.comentarios.length == 0,
+                  replacement: comComentario(),
+                  child: semComentario(),
+                ),
+              ),
+            ],
           );
         });
   }
@@ -38,19 +42,17 @@ class ComentariosView extends GetView<HomeController> {
       child: Visibility(
         replacement: LoaderWidget(),
         visible: !controller.carregando,
-        child: Container(
-            height: Get.height,
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          child: ListView(
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              TextWidget(
-                text: 'Comentários',
-                fontSize: 17,
-              ),
-              Container(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            TextWidget(
+              text: 'Comentários',
+              fontSize: 17,
+            ),
+            Expanded(
+              child: Container(
                 height: Get.height * .4,
                 child: ListView.builder(
                     controller: scrollController,
@@ -59,13 +61,13 @@ class ComentariosView extends GetView<HomeController> {
                       var comentario = controller.comentarios[index];
 
                       return ListTile(
-                        leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                comentario.pessoa.fotoUrl,
-                                scale: 2)),
                         // leading: CircleAvatar(
-                        //   child: Icon(Icons.person),
-                        // ),
+                        //     backgroundImage: NetworkImage(
+                        //         comentario.pessoa.fotoUrl,
+                        //         scale: 2)),
+                        leading: CircleAvatar(
+                          child: Icon(Icons.person),
+                        ),
                         title: TextWidget(
                           text: comentario.pessoa.nome,
                         ),
@@ -80,13 +82,12 @@ class ComentariosView extends GetView<HomeController> {
                       );
                     }),
               ),
-              Spacer(flex: 100,),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: renderAdicionarComentario(),
-              ),
-            ],
-          ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: renderAdicionarComentario(),
+            ),
+          ],
         ),
       ),
     );

@@ -64,7 +64,7 @@ class RegistroPage extends GetView<AuthController> {
                               return null;
                             }),
                         TextFormFieldWidget(
-                            label: 'Apelido',
+                            label: 'Sobrenome',
                             onChanged: (v) => controller.pessoa.apelido = v,
                             isObscure: false,
                             icon: Icon(
@@ -75,7 +75,7 @@ class RegistroPage extends GetView<AuthController> {
                             validator: (value) {
                               var nome = controller.pessoa.apelido;
                               if (GetUtils.isNullOrBlank(nome))
-                                return "Preencha o seu nome";
+                                return "Preencha o seu Sobrenome";
                               return null;
                             }),
                         TextFormFieldWidget(
@@ -90,7 +90,7 @@ class RegistroPage extends GetView<AuthController> {
                             validator: (value) {
                               var nome = controller.pessoa.telemovel;
                               if (GetUtils.isNullOrBlank(nome))
-                                return "Preencha o seu nome";
+                                return "Preencha o seu Telemovel";
                               return null;
                             }),
                         TextFormFieldWidget(
@@ -187,7 +187,7 @@ class RegistroPage extends GetView<AuthController> {
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
         Future.delayed(Duration(seconds: 2), () {
-          Get.offAllNamed(Routes.LOGIN);
+          Get.toNamed(Routes.LOGIN);
         });
       } else {
         Get.rawSnackbar(
