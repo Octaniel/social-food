@@ -1,5 +1,6 @@
 import 'package:socialfood/app/modules/auth/auth_binding.dart';
 import 'package:socialfood/app/modules/auth/pages/login_page.dart';
+import 'package:socialfood/app/modules/auth/pages/registro_page.dart';
 import 'package:socialfood/app/modules/configuracao/configuracao_binding.dart';
 import 'package:socialfood/app/modules/configuracao/pages/configuracao_page.dart';
 import 'package:socialfood/app/modules/favoritos/favorito_binding.dart';
@@ -17,6 +18,7 @@ import 'package:get/get.dart';
 abstract class AppPages {
   static final pages = [
     GetPage(name: Routes.LOGIN, page: () => LoginPage(), binding: AuthBinding()),
+    GetPage(name: Routes.REGISTRAR, page: () => RegistroPage(), binding: AuthBinding()),
     GetPage(name: Routes.CONFIGURACAO, page: () => ConfiguracaoPage(), binding: ConfiguracaoBinding(),transition: Transition.rightToLeft),
     GetPage(name: Routes.HOME, page: () => HomeView(), binding: HomeBinding(), transition: Transition.downToUp),
     GetPage(name: Routes.INSERIRVIDEO, page: () => InserirEditarVideoView(), binding: HomeBinding(), transition: Transition.rightToLeft),

@@ -5,32 +5,24 @@ import '../../app_controller.dart';
 
 class Video {
   int id;
-  String titulo;
-  String subtitulo;
   String url;
-  String thumbnail;
-  bool permitirComentarios;
   Pessoa pessoa;
+  String descricao;
   List<Pessoa> listaDePessoasQueGostaram;
   bool voceGostou;
+  DateTime dataPublicacao;
 
   Video(
       {this.id,
-      this.titulo,
-      this.subtitulo,
       this.url,
-      this.thumbnail,
-      this.permitirComentarios,
-      this.pessoa,});
+      this.pessoa,this.descricao});
 
   Video.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    titulo = json['titulo'];
-    subtitulo = json['subtitulo'];
     url = json['url'];
-    thumbnail = json['thumbnail'];
-    permitirComentarios = json['permitirComentarios'];
+    descricao = json['descricao'];
     pessoa = Pessoa.fromJson(json['pessoa']);
+    dataPublicacao = DateTime.parse(json['dataCriacao']);
     listaDePessoasQueGostaram = (json['listaDePessoasQueGostaram'] as List==null?List():json['listaDePessoasQueGostaram'] as List).map((e) => Pessoa.fromJson(e)).toList();
     voceGostou = listaDePessoasQueGostaram.contains(Get.find<AppController>().usuario.pessoa);
   }
@@ -38,11 +30,8 @@ class Video {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['titulo'] = this.titulo;
-    data['subTitulo'] = this.subtitulo;
     data['url'] = this.url;
-    data['thumbnail'] = this.thumbnail;
-    data['permitirComentarios'] = this.permitirComentarios;
+    data['descricao'] = this.descricao;
     data['pessoa'] = pessoa.toJsonId();
     return data;
   }

@@ -5,7 +5,9 @@ import 'package:socialfood/app/data/repository/auth_repository.dart';
 import 'data/model/usuario.dart';
 
 class AppController extends GetxController {
-  AppController();
+  AppController(){
+    refreshUsuario();
+  }
 
   final repository = AuthRepository();
 

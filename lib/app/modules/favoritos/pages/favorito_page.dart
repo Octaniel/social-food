@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_link_preview/flutter_link_preview.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:socialfood/app/data/model/video.dart';
 import 'package:socialfood/app/modules/favoritos/controllers/favorito_controller.dart';
 import 'package:socialfood/app/modules/favoritos/widgets/comentarios_widget.dart';
+import 'package:socialfood/app/modules/home/controllers/home-controller.dart';
 import 'package:socialfood/app/res/util.dart';
 import 'package:socialfood/app/widgets/custom_drawer.dart';
 import 'package:socialfood/app/widgets/loader-widget.dart';
 import 'package:socialfood/app/widgets/text-widget.dart';
+
+import '../../../app_controller.dart';
 
 class FavoritoPage extends GetView<FavoritoController> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -68,29 +73,29 @@ class FavoritoPage extends GetView<FavoritoController> {
                                               text:
                                                   '${video.pessoa.nome} ${video.pessoa.apelido}'),
 
-                                          // leading: CircleAvatar(
-                                          //     backgroundImage:
-                                          //         NetworkImage(video.pessoa.fotoUrl)),
                                           leading: CircleAvatar(
-                                            child: Icon(Icons.person),
-                                          ),
+                                              backgroundImage:
+                                                  NetworkImage(video.pessoa.fotoUrl)),
+                                          // leading: CircleAvatar(
+                                          //   child: Icon(Icons.person),
+                                          // ),
                                         ),
-                                        // GestureDetector(
-                                        //   onTap: () {
-                                        //     Navigator.push(
-                                        //         context,
-                                        //         MaterialPageRoute(
-                                        //             builder: (context) =>
-                                        //                 renderLinkPreview(
-                                        //                     video.url, true)));
-                                        //   },
-                                        //   child: renderLinkPreview1(video.url),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        renderLinkPreview(
+                                                            video.url, true, video)));
+                                          },
+                                          child: renderLinkPreview1(video.url),
+                                        ),
+                                        // Container(
+                                        //   height: 270,
+                                        //   width: 270,
+                                        //   color: Colors.greenAccent,
                                         // ),
-                                        Container(
-                                          height: 270,
-                                          width: 270,
-                                          color: Colors.greenAccent,
-                                        ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -164,30 +169,122 @@ class FavoritoPage extends GetView<FavoritoController> {
     );
   }
 
-  Widget renderLinkPreview(String link, bool total) {
-    double width = total ? Get.width * .9 : Get.width * .8;
-    double height = total ? Get.height * .6 : Get.height * .4;
+  Widget renderLinkPreview(String link, bool total, Video video) {
+    double width = total ? Get.width : Get.width * .8;
+    double height = total ? Get.height * .4 : Get.height * .23;
     String provider = nomeServer(link), videoID = idVideo(link);
     var htmlDataVimeo =
-        '''<iframe src="https://player.vimeo.com/video/$videoID" width=$width height=$height frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>''';
+    '''<iframe src="https://player.vimeo.com/video/$videoID" width=$width height=$height frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>''';
     var htmlData =
-        """<iframe width=$width height=$height src="https://www.youtube.com/embed/$videoID" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>""";
+    """<iframe width=$width height=$height src="https://www.youtube.com/embed/$videoID" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>""";
     final wid = provider == 'youtube'
         ? Html(
-            data: htmlData,
-          )
+      data: htmlData,
+    )
         : Html(
-            data: htmlDataVimeo,
-          );
+      data: htmlDataVimeo,
+    );
+    print(video?.descricao);
+    final textEditingControler = TextEditingController();
+    textEditingControler.text =
+    video != null && video.descricao != null ? video.descricao : '';
+    final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
     return total
         ? Scaffold(
-            body: SafeArea(
-              child: Center(
-                child: wid,
+      body: SafeArea(
+        child: Center(
+          child: ListView(
+            children: [
+              wid,
+              SizedBox(
+                height: 3,
               ),
-            ),
-          )
-        : wid;
+              Container(
+                margin: EdgeInsets.only(left: 7),
+                child: Text(
+                    'Publicado em ${dateFormat.format(video.dataPublicacao)}'),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              GetBuilder<FavoritoController>(
+                initState: (s) {
+                  controller.descricao = textEditingControler.text;
+                },
+                builder: (_) {
+                  return controller.descricao.isEmpty
+                      ? Text(
+                    'Sem descrição',
+                    textAlign: TextAlign.center,
+                  )
+                      : Text(
+                    '${controller.descricao}',
+                    style: TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
+                  );
+                },
+                id: 'descricaoVideo',
+              ),
+              Get.find<AppController>().usuario.grupo == 'administrador'
+                  ? IconButton(
+                tooltip: 'Editar descrição',
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  Get.defaultDialog(
+                      title: 'Editar descrição',
+                      content: TextField(
+                        controller: textEditingControler,
+                        maxLines: 3,
+                        onChanged: (v) {
+                          video.descricao = v;
+                          controller.descricao = v;
+                        },
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          hintText: 'Descrição',
+                          // contentPadding: EdgeInsets.all(5)
+                        ),
+                      ),
+                      onConfirm: () async {
+                        if (await controller
+                            .atualizarDescricaoVideo(video)) {
+                          Get.rawSnackbar(
+                              icon: Icon(FontAwesomeIcons.check),
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Color(0xFF3CFEB5),
+                              messageText: Text(
+                                'Descrição editado com sucesso',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              borderRadius: 10,
+                              margin: EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 20));
+                          Future.delayed(Duration(seconds: 2), () {
+                            Navigator.pop(Get.context);
+                          });
+                        }
+                      });
+                },
+              )
+                  : Text('')
+            ],
+          ),
+        ),
+      ),
+    )
+        : Stack(
+      children: [
+        wid,
+        Container(
+          height: height,
+          width: width,
+          color: Colors.transparent,
+        ),
+      ],
+    );
   }
 
   Widget renderLinkPreview1(String link) {
@@ -242,7 +339,7 @@ class FavoritoPage extends GetView<FavoritoController> {
               ),
               if (WebAnalyzer.isNotEmpty(webInfo.image)) ...[
                 const SizedBox(height: 2),
-                renderLinkPreview(link, false),
+                renderLinkPreview(link, false, null),
               ]
             ],
           ),

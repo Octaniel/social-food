@@ -18,7 +18,7 @@ class Pessoa{
     email = json['email'];
     pais = json['pais'];
     telemovel = json['telemovel'];
-    dataNascimento = DateTime.parse(json['dataNascimento']);
+    // dataNascimento = DateTime.parse(json['dataNascimento']);
     fotoUrl = json['fotoUrl'];
   }
 

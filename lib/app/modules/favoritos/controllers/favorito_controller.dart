@@ -26,6 +26,14 @@ class FavoritoController extends GetxController{
   final _comentario = Comentario().obs;
   final _permitirComentarios = false.obs;
   final _color = Colors.red.obs;
+  final _descricao = ''.obs;
+
+  String get descricao => _descricao.value;
+
+  set descricao(String value) {
+    _descricao.value = value;
+    update(['descricaoVideo']);
+  }
 
   MaterialColor get color => _color.value;
 
@@ -122,6 +130,10 @@ class FavoritoController extends GetxController{
       });
       update();
     }
+  }
+
+  Future<bool> atualizarDescricaoVideo(Video video) async {
+    return await videoRepository.atlauizar(video);
   }
 
 }

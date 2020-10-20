@@ -31,75 +31,20 @@ class InserirEditarVideoView extends GetView<HomeController> {
                 decoration: InputDecoration(
                     labelStyle: GoogleFonts.muli(), labelText: 'Url do vídeo'),
               ),
-              TextFormField(
-                onChanged: (v) => controller.video.titulo = v,
+              SizedBox(
+                height: 20,
+              ),
+              TextField(
+
+                maxLines: 3,
+                onChanged: (v){
+                  controller.video.descricao = v;
+                },
+                textAlign: TextAlign.center,
                 decoration: InputDecoration(
-                    labelStyle: GoogleFonts.muli(), labelText: 'Título'),
-              ),
-              Row(
-                children: [
-                  TextWidget(text: 'Usar título do vídeo original?'),
-                  Switch(value: false, onChanged: (v) => {})
-                ],
-              ),
-              Container(
-                child: Container(
-                    width: Get.width,
-                    height: 200,
-                    child: Card(
-                      elevation: 0,
-                      color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
-                      child: Center(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              icon: Icon(Icons.photo), onPressed: () async {}),
-                          TextWidget(
-                              text: 'Toque aqui para selecionar a thumbnail'),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextWidget(
-                            text: '- Não pode conter imagem imprópria',
-                            fontSize: 12,
-                          ),
-                          TextWidget(
-                            text: '- A altura não pode ultrapassar de 200px',
-                            fontSize: 12,
-                          ),
-                          TextWidget(
-                            text: '- A largura não pode ultrapassar de 400px',
-                            fontSize: 12,
-                          ),
-                        ],
-                      )),
-                    )),
-              ),
-              Row(
-                children: [
-                  TextWidget(text: 'Usar a thumbnail do vídeo original?'),
-                  Switch(
-                      value: false,
-                      onChanged: (v) =>
-                          {print(controller.video.permitirComentarios)})
-                ],
-              ),
-              Row(
-                children: [
-                  TextWidget(text: 'Permitir comentários?'),
-                  GetBuilder<HomeController>(builder: (_) {
-                    return Switch(
-                        value: controller.video.permitirComentarios,
-                        onChanged: (v) {
-                          controller.video.permitirComentarios = v;
-                          controller.video = controller.video;
-                        });
-                  }, id: 'switchPermitirComentários',),
-                ],
-              ),
-              Divider(
-                thickness: 1,
+                  hintText: 'Descrição',
+                  // contentPadding: EdgeInsets.all(5)
+                ),
               ),
               SizedBox(
                 height: 10,

@@ -8,6 +8,7 @@ import 'package:socialfood/app/theme/theme-controller.dart';
 import 'package:socialfood/app/widgets/custom_drawer.dart';
 import 'package:socialfood/app/widgets/text-widget.dart';
 
+import '../../../app_controller.dart';
 import 'bottom-nav-widget.dart';
 import 'feed-view.dart';
 import 'inserir-editar-video-view.dart';
@@ -56,19 +57,19 @@ class HomeView extends GetView<HomeController> {
         IconButton(
             icon: Icon(Icons.lightbulb),
             onPressed: () => ThemeController.to.handleThemeChange()),
-        IconButton(
-            icon: Icon(Icons.filter_list),
-            onPressed: () => Get.bottomSheet(BottomSheet(
-                onClosing: () => {},
-                builder: (context) {
-                  return Container();
-                }))),
-        IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () => ThemeController.to.handleThemeChange()),
-        IconButton(icon: Icon(Icons.video_call), onPressed: () {
+        // IconButton(
+        //     icon: Icon(Icons.filter_list),
+        //     onPressed: () => Get.bottomSheet(BottomSheet(
+        //         onClosing: () => {},
+        //         builder: (context) {
+        //           return Container();
+        //         }))),
+        // IconButton(
+        //     icon: Icon(Icons.search),
+        //     onPressed: () => ThemeController.to.handleThemeChange()),
+        Get.find<AppController>().usuario.grupo == 'administrador'?IconButton(icon: Icon(Icons.video_call), onPressed: () {
           Get.toNamed(Routes.INSERIRVIDEO);
-        }),
+        }):Text(''),
       ],
     );
   }

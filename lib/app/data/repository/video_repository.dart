@@ -11,4 +11,8 @@ class VideoRepository{
   Future<bool> salvar(Video video)async{
     return await videoProvider.salvar(video);
   }
+
+  Future<bool> atlauizar(Video video)async{
+    return await videoProvider.atlauizar(video);
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:socialfood/app/data/model/comentario.dart';
@@ -25,9 +27,17 @@ class HomeController extends GetxController {
   final _videosQueGostei = List<Video>().obs;
   final _comentarios = List<Comentario>().obs;
   final _comentario = Comentario().obs;
-  final _video = Video(permitirComentarios: true).obs;
+  final _video = Video().obs;
   final _permitirComentarios = false.obs;
   final _color = Colors.red.obs;
+  final _descricao = ''.obs;
+
+  String get descricao => _descricao.value;
+
+  set descricao(String value) {
+    _descricao.value = value;
+    update(['descricaoVideo']);
+  }
 
   MaterialColor get color => _color.value;
 
@@ -52,12 +62,6 @@ class HomeController extends GetxController {
   set video(value) {
     _video.value = value;
     update(['switchPermitirComentários']);
-  }
-
-  videoUpdate(bool per){
-    _video.update((val) {
-      val.permitirComentarios = per;
-    });
   }
 
   Comentario get comentario => _comentario.value;
@@ -145,6 +149,10 @@ class HomeController extends GetxController {
       });
       update();
     }
+  }
+
+  Future<bool> atualizarDescricaoVideo(Video video) async {
+   return await videoRepository.atlauizar(video);
   }
 
 }

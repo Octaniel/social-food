@@ -33,11 +33,8 @@ class CustomDrawer extends GetWidget<AppController> {
                     child: Container(
                       child: CircleAvatar(
                         radius: 70,
-                        child: Icon(Icons.person),
-                        // child: Image.network(
-                        //   controller.usuario.pessoa.fotoUrl,
-                        //   fit: BoxFit.contain,
-                        // ),
+                        // child: Icon(Icons.person),
+                        backgroundImage: NetworkImage(controller.usuario.pessoa.fotoUrl),
                       ),
                       alignment: Alignment.centerLeft,
                       width: 100,

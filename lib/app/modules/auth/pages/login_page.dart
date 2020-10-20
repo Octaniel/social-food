@@ -40,7 +40,7 @@ class LoginPage extends GetView<AuthController> {
                         offset: Offset(0, 10))
                   ]),
               width: 300,
-              height: 280,
+              height: 312,
               child: Form(
                 key: formKey,
                 child: Column(
@@ -107,6 +107,27 @@ class LoginPage extends GetView<AuthController> {
                                   validarForm();
                                 }
                               : null),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.offNamed(Routes.REGISTRAR);
+                      },
+                      child: Text('Eu não tenho conta', style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 14,
+                        color: Color(0xFF575E63),
+
+                      ),)
+
+                      // 'Eu n達o tenho conta'
+                      //     .text
+                      //     .size(14)
+                      //     .color(Color(0xFF575E63))
+                      //     .underline
+                      //     .make(),
                     ),
                   ],
                 ),
