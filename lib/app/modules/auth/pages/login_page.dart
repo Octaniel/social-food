@@ -20,7 +20,7 @@ class LoginPage extends GetView<AuthController> {
           children: [
             Container(
               child: TextWidget(
-                text: 'FEEDFOOD',
+                text: GetPlatform.isWeb?'FEEDFOOD ADMIN':'FEEDFOOD',
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
@@ -40,7 +40,7 @@ class LoginPage extends GetView<AuthController> {
                         offset: Offset(0, 10))
                   ]),
               width: 300,
-              height: 312,
+              height: GetPlatform.isWeb?270:312,
               child: Form(
                 key: formKey,
                 child: Column(
@@ -111,7 +111,7 @@ class LoginPage extends GetView<AuthController> {
                     SizedBox(
                       height: 20,
                     ),
-                    InkWell(
+                    GetPlatform.isWeb?Text(''):InkWell(
                       onTap: () {
                         Get.toNamed(Routes.REGISTRAR);
                       },
@@ -121,13 +121,6 @@ class LoginPage extends GetView<AuthController> {
                         color: Color(0xFF575E63),
 
                       ),)
-
-                      // 'Eu n達o tenho conta'
-                      //     .text
-                      //     .size(14)
-                      //     .color(Color(0xFF575E63))
-                      //     .underline
-                      //     .make(),
                     ),
                   ],
                 ),
@@ -158,12 +151,12 @@ class LoginPage extends GetView<AuthController> {
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
         Future.delayed(Duration(seconds: 2), () {
-          Get.offAllNamed(Routes.HOME);
+          GetPlatform.isWeb?Get.offAllNamed(Routes.ADDVIDEOWEB):Get.offAllNamed(Routes.HOME);
         });
       } else {
         Get.rawSnackbar(
             icon: Icon(
-              FontAwesomeIcons.erlang,
+              FontAwesomeIcons.times,
               color: Colors.white,
             ),
             duration: Duration(seconds: 2),

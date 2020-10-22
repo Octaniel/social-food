@@ -8,4 +8,5 @@ abstract class Routes {
   static const CONFIGURACAO = '/configuracao';
   static const PERFIL = '/perfil';
   static const INSERIRVIDEO = '/inserirVideo';
+  static const ADDVIDEOWEB = '/addvideoweb';
 }

@@ -40,7 +40,7 @@ class FeedView extends GetView<HomeController> {
                           Container(
                               margin: EdgeInsets.all(10),
                               width: Get.width,
-                              height: 400,
+                              height: Get.height*.42,
                               child: Card(
                                   color: isDarkMode
                                       ? Colors.grey[800]
@@ -72,65 +72,6 @@ class FeedView extends GetView<HomeController> {
                                                           video)));
                                         },
                                         child: renderLinkPreview1(video.url),
-                                      ),
-                                      // GestureDetector(
-                                      //   onTap: () {
-                                      //     Navigator.push(
-                                      //         context,
-                                      //         MaterialPageRoute(
-                                      //             builder: (context) =>
-                                      //                 renderLinkPreview(
-                                      //                     video.url, true)));
-                                      //   },
-                                      //   child: Container(
-                                      //     height: 270,
-                                      //     width: 270,
-                                      //     color: Colors.greenAccent,
-                                      //   ),
-                                      // ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          IconButton(
-                                              icon: Icon(
-                                                Ionicons.ios_heart,
-                                                color: !Get.isDarkMode
-                                                    ? video.voceGostou
-                                                        ? Colors.red
-                                                        : Colors.black87
-                                                    : video.voceGostou
-                                                        ? Colors.black87
-                                                        : Colors.white,
-                                              ),
-                                              onPressed: () {
-                                                controller
-                                                    .salvarGosto(video.id);
-                                              }),
-                                          IconButton(
-                                              icon:
-                                                  Icon(Ionicons.ios_chatboxes),
-                                              onPressed: () => Get.bottomSheet(
-                                                  BottomSheet(
-                                                      onClosing: () => {
-                                                            controller
-                                                                .listarVideo()
-                                                          },
-                                                      builder: (context) {
-                                                        return ComentariosView(
-                                                          videoId: video.id,
-                                                        );
-                                                      }))),
-                                          IconButton(
-                                              icon: Icon(Ionicons.md_eye),
-                                              onPressed: () {}),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                        ],
                                       ),
                                     ],
                                   ))),
@@ -194,6 +135,45 @@ class FeedView extends GetView<HomeController> {
                     SizedBox(
                       height: 3,
                     ),
+                    GetBuilder<HomeController>(builder: (_) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Ionicons.ios_heart,
+                                color: !Get.isDarkMode
+                                    ? video.voceGostou
+                                        ? Colors.red
+                                        : Colors.black87
+                                    : video.voceGostou
+                                        ? Colors.black87
+                                        : Colors.white,
+                              ),
+                              onPressed: () {
+                                controller.salvarGosto(video.id);
+                              }),
+                          IconButton(
+                              icon: Icon(Ionicons.ios_chatboxes),
+                              onPressed: () => Get.bottomSheet(BottomSheet(
+                                  onClosing: () => {controller.listarVideo()},
+                                  builder: (context) {
+                                    return ComentariosView(
+                                      videoId: video.id,
+                                    );
+                                  }))),
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      );
+                    },id: 'salverGosto',),
+                    SizedBox(
+                      height: 3,
+                    ),
                     Container(
                       margin: EdgeInsets.only(left: 7),
                       child: Text(
@@ -203,8 +183,8 @@ class FeedView extends GetView<HomeController> {
                       height: 10,
                     ),
                     GetBuilder<HomeController>(
-                      dispose: (s){
-                        controller.descricao = '';
+                      dispose: (s) {
+                        controller.descricao1 = '';
                       },
                       initState: (s) {
                         controller.descricao = textEditingControler.text;

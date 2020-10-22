@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:socialfood/app/data/model/Item.dart';
 import 'package:socialfood/app/data/model/comentario.dart';
 import 'package:socialfood/app/data/model/gosto.dart';
 import 'package:socialfood/app/data/model/pessoa.dart';
@@ -31,12 +32,33 @@ class HomeController extends GetxController {
   final _permitirComentarios = false.obs;
   final _color = Colors.red.obs;
   final _descricao = ''.obs;
+  final _itens = List<Item>().obs;
+
+  List<Item> get itens => _itens.value;
+
+  set itens(List<Item> value) {
+    _itens.value = value;
+    update();
+  }
+  addItem(String value){
+    var item = Item(nome: value);
+    itens.add(item);
+    update(['addItem']);
+  }
+  removerItem(Item index){
+    itens.remove(index);
+    update(['addItem']);
+  }
 
   String get descricao => _descricao.value;
 
   set descricao(String value) {
     _descricao.value = value;
     update(['descricaoVideo']);
+  }
+
+  set descricao1(String value) {
+    _descricao.value = value;
   }
 
   MaterialColor get color => _color.value;
@@ -118,6 +140,7 @@ class HomeController extends GetxController {
   }
 
   Future<bool> inserirVideo() async {
+    video.itens = itens;
     video.pessoa = Pessoa(id: Get.find<AppController>().usuario.pessoa.id);
     return await videoRepository.salvar(video);
   }
@@ -137,7 +160,7 @@ class HomeController extends GetxController {
       var video = videos.firstWhere((element) => element.id==idVideo);
       video.voceGostou = false;
     }
-    update();
+    update(['salverGosto']);
   }
 
   mudarCor() async {

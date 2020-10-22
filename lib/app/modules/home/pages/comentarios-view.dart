@@ -61,13 +61,10 @@ class ComentariosView extends GetView<HomeController> {
                       var comentario = controller.comentarios[index];
 
                       return ListTile(
-                        // leading: CircleAvatar(
-                        //     backgroundImage: NetworkImage(
-                        //         comentario.pessoa.fotoUrl,
-                        //         scale: 2)),
                         leading: CircleAvatar(
-                          child: Icon(Icons.person),
-                        ),
+                            backgroundImage: NetworkImage(
+                                comentario.pessoa.fotoUrl,
+                                scale: 2)),
                         title: TextWidget(
                           text: comentario.pessoa.nome,
                         ),

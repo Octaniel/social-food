@@ -192,7 +192,7 @@ class RegistroPage extends GetView<AuthController> {
       } else {
         Get.rawSnackbar(
             icon: Icon(
-              FontAwesomeIcons.erlang,
+              FontAwesomeIcons.times,
               color: Colors.white,
             ),
             duration: Duration(seconds: 2),

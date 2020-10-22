@@ -90,7 +90,7 @@ class InserirEditarVideoView extends GetView<HomeController> {
       } else {
         Get.rawSnackbar(
             icon: Icon(
-              FontAwesomeIcons.erlang,
+              FontAwesomeIcons.times,
               color: Colors.white,
             ),
             duration: Duration(seconds: 2),
