@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:socialfood/app/app_controller.dart';
 import 'package:socialfood/app/data/model/Item.dart';
 import 'package:socialfood/app/data/model/video.dart';
 import 'package:socialfood/app/modules/home/controllers/home-controller.dart';
+import 'package:socialfood/app/routes/app_routes.dart';
 import 'package:socialfood/app/widgets/text-widget.dart';
 
 class AddVideoWebPage extends GetView<HomeController> {
@@ -18,6 +20,24 @@ class AddVideoWebPage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: CircleAvatar(
+            backgroundImage: NetworkImage(
+                Get.find<AppController>().usuario.pessoa?.fotoUrl??'https://p7.hiclipart.com/preview/340/956/944/computer-icons-user-profile-head-ico-download.jpg',
+                scale: 2)),
+        actions: [
+          IconButton(
+            tooltip: 'Sair',
+            onPressed: () async {
+              if (await Get.find<AppController>().logout()) {
+                Get.offAllNamed(Routes.LOGIN);
+              }
+            },
+            icon: Icon(FontAwesomeIcons.signOutAlt),
+          ),
+        ],
+        centerTitle: true,
+      ),
       body: Container(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
