@@ -3,7 +3,7 @@ final String url11 = "http://197.159.166.11:8080/";
 final String url12 = "http://localhost:8080/";
 final String heroku = "https://feed-food-api.herokuapp.com/";
 final String ec2 = "https://ec2-15-228-50-178.sa-east-1.compute.amazonaws.com:443/";
-final String url = heroku;
+final String url = ec2;
 
 String decoder(String body) {
   body = body.replaceAll('Ã§', 'ç');
