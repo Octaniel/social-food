@@ -64,15 +64,25 @@ class AuthProvider {
     return false;
   }
 
-  Future<bool> add(Usuario obj) async {
+  Future<List> add(Usuario obj) async {
     var response = await httpClient.post('${baseUrl}usuario/add',
         headers: {'Content-Type': 'application/json'}, body: jsonEncode(obj));
     if (response.statusCode == 201) {
-      return true;
-    } else {
-      print('erro -post');
+      var list = List();
+      list.insert(0, true);
+      list.insert(1, 'Registrado(a) com sucesso');
+      return list;
+    } else if(response.statusCode == 409) {
+      var list = List();
+      list.insert(0, false);
+      list.insert(1, 'Este E-mail já esta sendo utilizado por outra pessoa');
+      return list;
+    }else{
+      var list = List();
+      list.insert(0, false);
+      list.insert(1, 'Erro ao registrar');
+      return list;
     }
-    return false;
   }
 
   Future<bool> logout() async {

@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:socialfood/app/modules/home/controllers/home-controller.dart';
 import 'package:socialfood/app/modules/home/pages/perfil-view.dart';
@@ -14,6 +14,8 @@ import 'feed-view.dart';
 import 'inserir-editar-video-view.dart';
 
 class HomeView extends GetView<HomeController> {
+
+  final texteditingController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -32,16 +34,12 @@ class HomeView extends GetView<HomeController> {
       child: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: controller.controller,
-        children: [
-          FeedView(),
-          PerfilView(),
-          InserirEditarVideoView()
-        ],
+        children: [FeedView(), PerfilView(), InserirEditarVideoView()],
       ),
     );
   }
 
-  Widget renderAppBar() {
+  AppBar renderAppBar() {
     return AppBar(
       elevation: 0,
       leading: IconButton(
@@ -49,11 +47,12 @@ class HomeView extends GetView<HomeController> {
           onPressed: () {
             _scaffoldKey.currentState.openDrawer();
           }),
-      title: TextWidget(
-        text: 'FeedFood',
-      ),
+      title: GetBuilder<HomeController>(builder: (_){
+        return !controller.searchBar?TextWidget(
+          text: 'FeedFood',
+        ):searchBar();
+      },),
       actions: [
-
         IconButton(
             icon: Icon(Icons.lightbulb),
             onPressed: () => ThemeController.to.handleThemeChange()),
@@ -64,12 +63,18 @@ class HomeView extends GetView<HomeController> {
         //         builder: (context) {
         //           return Container();
         //         }))),
-        // IconButton(
-        //     icon: Icon(Icons.search),
-        //     onPressed: () => ThemeController.to.handleThemeChange()),
-        Get.find<AppController>().usuario.grupo == 'administrador'?IconButton(icon: Icon(Icons.video_call), onPressed: () {
-          Get.toNamed(Routes.INSERIRVIDEO);
-        }):Text(''),
+        GetBuilder<HomeController>(builder: (_){
+          return !controller.searchBar?IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () => controller.searchBar = true):Text('');
+        },),
+        Get.find<AppController>().usuario.grupo == 'administrador'
+            ? IconButton(
+                icon: Icon(Icons.video_call),
+                onPressed: () {
+                  Get.toNamed(Routes.INSERIRVIDEO);
+                })
+            : Text(''),
       ],
     );
   }
@@ -80,5 +85,37 @@ class HomeView extends GetView<HomeController> {
 
   Widget renderBottomMenu() {
     return BottomNavWidget();
+  }
+
+  Widget searchBar() {
+    return Container(
+      width: Get.width*.75,
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+          color: Get.isDarkMode?Colors.grey[900]:Colors.redAccent.withOpacity(.8),
+          borderRadius: BorderRadius.circular(22)),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: Get.find<AppController>().usuario.grupo != 'administrador'?Get.width*.7-25:Get.width*.7-73,
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: TextFormField(
+              controller: controller.texteditingController,
+              onFieldSubmitted: (s) {
+                controller.filtrarVideo(s);
+                controller.searchBar = false;
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Pesquisar',
+                  hintStyle: TextStyle(color: Colors.white),
+                  icon: Icon(Icons.search, color: Colors.white)),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

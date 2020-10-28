@@ -111,7 +111,8 @@ class LoginPage extends GetView<AuthController> {
                     SizedBox(
                       height: 20,
                     ),
-                    GetPlatform.isWeb?Text(''):InkWell(
+                    // GetPlatform.isWeb?Text(''):
+                    InkWell(
                       onTap: () {
                         Get.toNamed(Routes.REGISTRAR);
                       },
@@ -142,7 +143,7 @@ class LoginPage extends GetView<AuthController> {
             duration: Duration(seconds: 2),
             backgroundColor: Color(0xFF3CFEB5),
             messageText: Text(
-              'Seja Bem vindo',
+              'Seja Bem vindo(a)',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -151,6 +152,7 @@ class LoginPage extends GetView<AuthController> {
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
         Future.delayed(Duration(seconds: 2), () {
+          // Get.offAllNamed(Routes.HOME);
           GetPlatform.isWeb?Get.offAllNamed(Routes.ADDVIDEOWEB):Get.offAllNamed(Routes.HOME);
         });
       } else {

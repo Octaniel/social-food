@@ -171,14 +171,15 @@ class RegistroPage extends GetView<AuthController> {
   validarForm() async {
     if (formKey.currentState.validate()) {
       controller.carregando = true;
-      if (await controller.salvarUsuario()) {
+      var list = await controller.salvarUsuario();
+      if (list.elementAt(0)==true) {
         Get.find<AppController>().refreshUsuario();
         Get.rawSnackbar(
             icon: Icon(FontAwesomeIcons.check),
             duration: Duration(seconds: 2),
             backgroundColor: Color(0xFF3CFEB5),
             messageText: Text(
-              'Registrado com sucesso',
+              '${list.elementAt(1)}',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -198,7 +199,7 @@ class RegistroPage extends GetView<AuthController> {
             duration: Duration(seconds: 2),
             backgroundColor: Color(0xFFFE3C3C),
             messageText: Text(
-              'Erro ao registrar',
+              '${list.elementAt(1)}',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,

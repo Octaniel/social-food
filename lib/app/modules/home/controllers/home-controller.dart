@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_link_preview/flutter_link_preview.dart';
 import 'package:get/get.dart';
 import 'package:socialfood/app/data/model/Item.dart';
 import 'package:socialfood/app/data/model/comentario.dart';
@@ -10,6 +11,7 @@ import 'package:socialfood/app/data/model/video.dart';
 import 'package:socialfood/app/data/repository/comentario_repository.dart';
 import 'package:socialfood/app/data/repository/gosto_repository.dart';
 import 'package:socialfood/app/data/repository/video_repository.dart';
+import 'package:socialfood/app/widgets/loader-widget.dart';
 
 import '../../../app_controller.dart';
 
@@ -17,6 +19,7 @@ class HomeController extends GetxController {
   final videoRepository = VideoRepository();
   final comentarioRepository = ComentarioRepository();
   final gostoRepository = GostoRepository();
+  final texteditingController = TextEditingController();
   final PageController controller = PageController(
     initialPage: 0,
   );
@@ -25,6 +28,7 @@ class HomeController extends GetxController {
 
   final _carregando = false.obs;
   final _videos = List<Video>().obs;
+  final _videosFiltrado = List<Video>().obs;
   final _videosQueGostei = List<Video>().obs;
   final _comentarios = List<Comentario>().obs;
   final _comentario = Comentario().obs;
@@ -33,6 +37,21 @@ class HomeController extends GetxController {
   final _color = Colors.red.obs;
   final _descricao = ''.obs;
   final _itens = List<Item>().obs;
+  final _searchBar = false.obs;
+
+  List<Video> get videosFiltrado => _videosFiltrado.value;
+
+  set videosFiltrado(List<Video> value) {
+    _videosFiltrado.value = value;
+    update(['videosFiltrado']);
+  }
+
+  bool get searchBar => _searchBar.value;
+
+  set searchBar(bool value) {
+    _searchBar.value = value;
+    update(['searchBar']);
+  }
 
   List<Item> get itens => _itens.value;
 
@@ -113,12 +132,29 @@ class HomeController extends GetxController {
   listarVideo({videoId}) async {
     carregando = true;
     videos = await videoRepository.listar();
+    videosFiltrado = videos;
+    videos.forEach((element) async {
+      WebInfo info = await WebAnalyzer.getInfo(element.url);
+      element.nome = info.title;
+    });
     videosQueGostei = videos.map((e) {
       if(e.voceGostou) return e;
     }).toList();
+    print(videos);
     carregando = false;
     update();
     mudarCor();
+  }
+
+  filtrarVideo(String nome) async {
+    videosFiltrado = List<Video>();
+    videos.forEach((element) {
+      if(element.nome?.toLowerCase().contains(nome.toLowerCase())){
+        videosFiltrado.add(element);
+      }
+    });
+    print(videosFiltrado);
+    update();
   }
 
   excluirComentario(int comentarioId, int videoId) async {

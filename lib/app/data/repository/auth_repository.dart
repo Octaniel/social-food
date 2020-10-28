@@ -25,7 +25,7 @@ class AuthRepository {
     return await authProvider.logout();
   }
 
-  Future<bool> add(obj) async {
+  Future<List> add(obj) async {
     return await authProvider.add(obj);
   }
 

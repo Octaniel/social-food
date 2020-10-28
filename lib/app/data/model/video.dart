@@ -7,6 +7,7 @@ import 'Item.dart';
 class Video {
   int id;
   String url;
+  String nome;
   Pessoa pessoa;
   String descricao;
   String igredientes;
@@ -21,11 +22,13 @@ class Video {
   Video(
       {this.id,
       this.url,
+      this.nome,
       this.pessoa,this.descricao});
 
   Video.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     url = json['url'];
+    // nome = json['nome'];
     descricao = json['descricao'];
     igredientes = json['igredientes'];
     preparo = json['preparo'];
@@ -41,6 +44,7 @@ class Video {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['url'] = this.url;
+    data['nome'] = this.nome;
     data['descricao'] = this.descricao;
     data['igredientes'] = this.igredientes;
     data['preparo'] = this.preparo;
@@ -55,5 +59,10 @@ class Video {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'Video{ nome: $nome}';
   }
 }

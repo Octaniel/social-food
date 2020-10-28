@@ -24,23 +24,27 @@ class FeedView extends GetView<HomeController> {
         return Visibility(
             visible: !controller.carregando,
             replacement: LoaderWidget(),
-            child: controller.videos.isEmpty
+            child: controller.videosFiltrado.isEmpty
                 ? Center(
                     child: TextWidget(
-                      text: 'Nenhum vídeo cadastrado no momento',
+                      text: controller.texteditingController.text.isEmpty
+                          ? 'Nenhum vídeo cadastrado no momento'
+                          : 'Nenhum vídeo relaoicnado com a sua pesquisa no momento',
                     ),
                   )
                 : ListView.builder(
-                    itemCount: controller.videos.length,
+                    itemCount: controller.videosFiltrado.length,
                     itemBuilder: (context, index) {
-                      Video video = controller.videos[index];
+                      Video video = controller.videosFiltrado[index];
 
                       return Column(
                         children: [
                           Container(
                               margin: EdgeInsets.all(10),
                               width: Get.width,
-                              height: Get.height*.42,
+                              height: Get.height * .42 < 350
+                                  ? 350
+                                  : Get.height * .38,
                               child: Card(
                                   color: isDarkMode
                                       ? Colors.grey[800]
@@ -71,7 +75,7 @@ class FeedView extends GetView<HomeController> {
                                                           true,
                                                           video)));
                                         },
-                                        child: renderLinkPreview1(video.url),
+                                        child: renderLinkPreview1(video),
                                       ),
                                     ],
                                   ))),
@@ -102,12 +106,19 @@ class FeedView extends GetView<HomeController> {
                       );
                     }));
       },
+      id: 'videosFiltrado',
     );
   }
 
   Widget renderLinkPreview(String link, bool total, Video video) {
     double width = total ? Get.width : Get.width * .8;
-    double height = total ? Get.height * .4 : Get.height * .23;
+    double height = total
+        ? Get.height * .4 < 250
+            ? 250
+            : Get.height * .4
+        : Get.height * .23 < 200
+            ? 200
+            : Get.height * .23;
     String provider = nomeServer(link), videoID = idVideo(link);
     var htmlDataVimeo =
         '''<iframe src="https://player.vimeo.com/video/$videoID" width=$width height=$height frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>''';
@@ -120,7 +131,7 @@ class FeedView extends GetView<HomeController> {
         : Html(
             data: htmlDataVimeo,
           );
-    // print(Get.find<AppController>().usuario.pessoa.fotoUrl);
+    // print('hhhhhhhhhh${video.preparo}');
     final textEditingControler = TextEditingController();
     textEditingControler.text =
         video != null && video.descricao != null ? video.descricao : '';
@@ -135,42 +146,45 @@ class FeedView extends GetView<HomeController> {
                     SizedBox(
                       height: 3,
                     ),
-                    GetBuilder<HomeController>(builder: (_) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 10,
-                          ),
-                          IconButton(
-                              icon: Icon(
-                                Ionicons.ios_heart,
-                                color: !Get.isDarkMode
-                                    ? video.voceGostou
-                                        ? Colors.red
-                                        : Colors.black87
-                                    : video.voceGostou
-                                        ? Colors.black87
-                                        : Colors.white,
-                              ),
-                              onPressed: () {
-                                controller.salvarGosto(video.id);
-                              }),
-                          IconButton(
-                              icon: Icon(Ionicons.ios_chatboxes),
-                              onPressed: () => Get.bottomSheet(BottomSheet(
-                                  onClosing: () => {controller.listarVideo()},
-                                  builder: (context) {
-                                    return ComentariosView(
-                                      videoId: video.id,
-                                    );
-                                  }))),
-                          SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      );
-                    },id: 'salverGosto',),
+                    GetBuilder<HomeController>(
+                      builder: (_) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            IconButton(
+                                icon: Icon(
+                                  Ionicons.ios_heart,
+                                  color: !Get.isDarkMode
+                                      ? video.voceGostou
+                                          ? Colors.red
+                                          : Colors.black87
+                                      : video.voceGostou
+                                          ? Colors.black87
+                                          : Colors.white,
+                                ),
+                                onPressed: () {
+                                  controller.salvarGosto(video.id);
+                                }),
+                            IconButton(
+                                icon: Icon(Ionicons.ios_chatboxes),
+                                onPressed: () => Get.bottomSheet(BottomSheet(
+                                    onClosing: () => {controller.listarVideo()},
+                                    builder: (context) {
+                                      return ComentariosView(
+                                        videoId: video.id,
+                                      );
+                                    }))),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        );
+                      },
+                      id: 'salverGosto',
+                    ),
                     SizedBox(
                       height: 3,
                     ),
@@ -247,7 +261,83 @@ class FeedView extends GetView<HomeController> {
                                   });
                             },
                           )
-                        : Text('')
+                        : Text(''),
+                    !video.igredientes.isNullOrBlank
+                        ? Column(
+                            children: [
+                              Text(
+                                'Igredientes:',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                '${video.igredientes}',
+                                style: TextStyle(
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          )
+                        : Text(''),
+                    !video.preparo.isNullOrBlank
+                        ? Column(
+                      children: [
+                        Text(
+                          'Preparo:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          '${video.preparo}',
+                          style: TextStyle(
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )
+                        : Text(''),
+                    !video.canalLink.isNullOrBlank
+                        ? Column(
+                      children: [
+                        Text(
+                          'Link do canal:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          '${video.canalLink}',
+                          style: TextStyle(
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )
+                        : Text(''),
+                    !video.pageLink.isNullOrBlank
+                        ? Column(
+                      children: [
+                        Text(
+                          'Link da pagina:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          '${video.pageLink}',
+                          style: TextStyle(
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )
+                        : Text(''),
                   ],
                 ),
               ),
@@ -265,10 +355,10 @@ class FeedView extends GetView<HomeController> {
           );
   }
 
-  Widget renderLinkPreview1(String link) {
+  Widget renderLinkPreview1(Video video) {
     return FlutterLinkPreview(
-      key: ValueKey(link),
-      url: link,
+      key: ValueKey(video.url),
+      url: video.url,
       builder: (info) {
         if (info == null) {
           return LoaderWidget();
@@ -317,7 +407,7 @@ class FeedView extends GetView<HomeController> {
               ),
               if (WebAnalyzer.isNotEmpty(webInfo.image)) ...[
                 const SizedBox(height: 2),
-                renderLinkPreview(link, false, null),
+                renderLinkPreview(video.url, false, null),
               ]
             ],
           ),

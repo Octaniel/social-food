@@ -36,7 +36,7 @@ class AuthController extends GetxController{
     _email.value = value;
   }
 
-  Future<bool> salvarUsuario() async {
+  Future<List> salvarUsuario() async {
     usuario.pessoa = pessoa;
     usuario.nome = pessoa.nome.toLowerCase().trim();
    return await repository.add(usuario);
