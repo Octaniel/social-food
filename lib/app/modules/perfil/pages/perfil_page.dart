@@ -14,7 +14,7 @@ class PerfilPage extends StatelessWidget {
         leading: IconButton(
             icon: Icon(Icons.restaurant_menu),
             onPressed: () {
-              _scaffoldKey.currentState.openDrawer();
+              // _scaffoldKey.currentState.openDrawer();
             }),
         title: TextWidget(
           text: 'FeedFood',

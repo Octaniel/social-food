@@ -44,7 +44,6 @@ class Video {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['url'] = this.url;
-    data['nome'] = this.nome;
     data['descricao'] = this.descricao;
     data['igredientes'] = this.igredientes;
     data['preparo'] = this.preparo;

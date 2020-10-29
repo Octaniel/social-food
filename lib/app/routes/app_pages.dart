@@ -25,7 +25,7 @@ abstract class AppPages {
     GetPage(name: Routes.ADDVIDEOWEB, page: () => AddVideoWebPage(), binding: HomeBinding(), transition: Transition.downToUp),
     GetPage(name: Routes.INSERIRVIDEO, page: () => InserirEditarVideoView(), binding: HomeBinding(), transition: Transition.rightToLeft),
     GetPage(name: Routes.SPLASH, page: () => SplashPage()),
-    GetPage(name: Routes.FAVORITO, page: () => FavoritoPage(), binding: FavoritoBinding() ,transition: Transition.rightToLeft),
+    GetPage(name: Routes.FAVORITO, page: () => FavoritoPage(), binding: FavoritoBinding() ,transition: Transition.upToDown),
     GetPage(name: Routes.PERFIL, page: () => PerfilPage(), binding: PerfilBinding() ,transition: Transition.zoom),
   ];
   }

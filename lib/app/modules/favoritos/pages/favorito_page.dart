@@ -60,7 +60,9 @@ class FavoritoPage extends GetView<FavoritoController> {
                             Container(
                                 margin: EdgeInsets.all(10),
                                 width: Get.width,
-                                height: 400,
+                                height: Get.height * .42 < 350
+                                    ? 350
+                                    : Get.height * .38,
                                 child: Card(
                                     color: isDarkMode
                                         ? Colors.grey[800]
@@ -68,18 +70,18 @@ class FavoritoPage extends GetView<FavoritoController> {
                                     elevation: 0,
                                     child: Column(
                                       children: [
-                                        ListTile(
-                                          title: TextWidget(
-                                              text:
-                                                  '${video.pessoa.nome} ${video.pessoa.apelido}'),
-
-                                          leading: CircleAvatar(
-                                              backgroundImage:
-                                                  NetworkImage(video.pessoa.fotoUrl)),
-                                          // leading: CircleAvatar(
-                                          //   child: Icon(Icons.person),
-                                          // ),
-                                        ),
+                                        // ListTile(
+                                        //   title: TextWidget(
+                                        //       text:
+                                        //           '${video.pessoa.nome} ${video.pessoa.apelido}'),
+                                        //
+                                        //   leading: CircleAvatar(
+                                        //       backgroundImage:
+                                        //           NetworkImage(video.pessoa.fotoUrl)),
+                                        //   // leading: CircleAvatar(
+                                        //   //   child: Icon(Icons.person),
+                                        //   // ),
+                                        // ),
                                         GestureDetector(
                                           onTap: () {
                                             Navigator.push(
@@ -96,46 +98,6 @@ class FavoritoPage extends GetView<FavoritoController> {
                                         //   width: 270,
                                         //   color: Colors.greenAccent,
                                         // ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            IconButton(
-                                                icon: Icon(
-                                                  Ionicons.ios_heart,
-                                                  color: video.voceGostou
-                                                      ? Colors.red
-                                                      : Colors.black87,
-                                                ),
-                                                onPressed: () {
-                                                  controller
-                                                      .salvarGosto(video.id);
-                                                }),
-                                            IconButton(
-                                                icon: Icon(
-                                                    Ionicons.ios_chatboxes),
-                                                onPressed: () =>
-                                                    Get.bottomSheet(BottomSheet(
-                                                        onClosing: () => {
-                                                              controller
-                                                                  .listarVideoQueGostei()
-                                                            },
-                                                        builder: (context) {
-                                                          return ComentariosWidget(
-                                                            videoId: video.id,
-                                                          );
-                                                        }))),
-                                            IconButton(
-                                                icon: Icon(Ionicons.md_eye),
-                                                onPressed: () {}),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                          ],
-                                        ),
                                       ],
                                     ))),
                             Visibility(

@@ -140,7 +140,6 @@ class HomeController extends GetxController {
     videosQueGostei = videos.map((e) {
       if(e.voceGostou) return e;
     }).toList();
-    print(videos);
     carregando = false;
     update();
     mudarCor();
@@ -153,7 +152,6 @@ class HomeController extends GetxController {
         videosFiltrado.add(element);
       }
     });
-    print(videosFiltrado);
     update();
   }
 
