@@ -10,6 +10,7 @@ import 'package:socialfood/app/theme/theme-controller.dart';
 import 'package:socialfood/app/widgets/custom_drawer.dart';
 import 'package:socialfood/app/widgets/text-widget.dart';
 
+import '../../../app_controller.dart';
 import 'bottom-nav-widget.dart';
 
 class InserirEditarVideoView extends GetView<HomeController> {
@@ -116,13 +117,20 @@ class InserirEditarVideoView extends GetView<HomeController> {
   }
 
   Widget renderAppBar() {
+    var find = Get.find<AppController>();
     return AppBar(
       elevation: 0,
-      leading: IconButton(
-          icon: Icon(Icons.restaurant_menu),
-          onPressed: () {
-            _scaffoldKey.currentState.openDrawer();
-          }),
+      leading: GestureDetector(
+        onTap: ()=>Get.toNamed(Routes.PERFIL),
+        child: Container(
+          margin: EdgeInsets.all(5),
+          child: CircleAvatar(
+            // radius: 25,
+            // child: Icon(Icons.person),
+            backgroundImage: NetworkImage(find.usuario.pessoa.fotoUrl),
+          ),
+        ),
+      ),
       title: TextWidget(
         text: 'FeedFood',
       ),
@@ -130,9 +138,9 @@ class InserirEditarVideoView extends GetView<HomeController> {
         IconButton(icon: Icon(Ionicons.ios_home), onPressed: () {
           Get.toNamed(Routes.HOME);
         }),
-        IconButton(
-            icon: Icon(Icons.lightbulb),
-            onPressed: () => ThemeController.to.handleThemeChange()),
+        // IconButton(
+        //     icon: Icon(Icons.lightbulb),
+        //     onPressed: () => ThemeController.to.handleThemeChange()),
       ],
     );
   }

@@ -52,18 +52,18 @@ class FeedView extends GetView<HomeController> {
                                   elevation: 0,
                                   child: Column(
                                     children: [
-                                      ListTile(
-                                        title: TextWidget(
-                                            text:
-                                                '${video.pessoa.nome} ${video.pessoa.apelido}'),
-
-                                        leading: CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                                video.pessoa.fotoUrl)),
-                                        // leading: CircleAvatar(
-                                        //   child: Icon(Icons.person),
-                                        // ),
-                                      ),
+                                      // ListTile(
+                                      //   title: TextWidget(
+                                      //       text:
+                                      //           '${video.pessoa.nome} ${video.pessoa.apelido}'),
+                                      //
+                                      //   leading: CircleAvatar(
+                                      //       backgroundImage: NetworkImage(
+                                      //           video.pessoa.fotoUrl)),
+                                      //   // leading: CircleAvatar(
+                                      //   //   child: Icon(Icons.person),
+                                      //   // ),
+                                      // ),
                                       GestureDetector(
                                         onTap: () {
                                           Navigator.push(
@@ -131,7 +131,7 @@ class FeedView extends GetView<HomeController> {
         : Html(
             data: htmlDataVimeo,
           );
-    // print('hhhhhhhhhh${video.preparo}');
+    if(total) print('hhhhhhhhhh${video.descricao}');
     final textEditingControler = TextEditingController();
     textEditingControler.text =
         video != null && video.descricao != null ? video.descricao : '';
