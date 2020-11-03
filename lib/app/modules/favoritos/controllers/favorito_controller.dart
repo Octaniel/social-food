@@ -14,6 +14,7 @@ class FavoritoController extends GetxController{
   final videoRepository = VideoRepository();
   final comentarioRepository = ComentarioRepository();
   final gostoRepository = GostoRepository();
+  int page = 0;
   final PageController controller = PageController(
     initialPage: 0,
   );
@@ -95,10 +96,11 @@ class FavoritoController extends GetxController{
     controller.jumpToPage(index);
   }
 
-  listarVideoQueGostei({videoId}) async {
+  listarVideoQueGostei(String nome, {bool refresh=false}) async {
     final listVideoAux = List<Video>();
     carregando = true;
-    videos = await videoRepository.listar();
+    videos = await videoRepository.listar(page,'');
+    page += 1;
     videos.forEach((element) {
       if(element.voceGostou) listVideoAux.add(element);
     });

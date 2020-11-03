@@ -131,7 +131,7 @@ class FeedView extends GetView<HomeController> {
         : Html(
             data: htmlDataVimeo,
           );
-    if(total) print('hhhhhhhhhh${video.descricao}');
+    // if(total) print('hhhhhhhhhh${video.descricao}');
     final textEditingControler = TextEditingController();
     textEditingControler.text =
         video != null && video.descricao != null ? video.descricao : '';

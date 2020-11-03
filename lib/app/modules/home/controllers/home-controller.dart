@@ -20,6 +20,8 @@ class HomeController extends GetxController {
   final comentarioRepository = ComentarioRepository();
   final gostoRepository = GostoRepository();
   final texteditingController = TextEditingController();
+  final scrollController = ScrollController();
+  int page = 0;
   final PageController controller = PageController(
     initialPage: 0,
   );
@@ -27,6 +29,7 @@ class HomeController extends GetxController {
   RxInt currentIndex = 0.obs;
 
   final _carregando = false.obs;
+  final _carregandoRefresh = false.obs;
   final _videos = List<Video>().obs;
   final _videosFiltrado = List<Video>().obs;
   final _videosQueGostei = List<Video>().obs;
@@ -38,6 +41,12 @@ class HomeController extends GetxController {
   final _descricao = ''.obs;
   final _itens = List<Item>().obs;
   final _searchBar = false.obs;
+
+  bool get carregandoRefresh => _carregandoRefresh.value;
+
+  set carregandoRefresh(bool value) {
+    _carregandoRefresh.value = value;
+  }
 
   List<Video> get videosFiltrado => _videosFiltrado.value;
 
@@ -59,12 +68,14 @@ class HomeController extends GetxController {
     _itens.value = value;
     update();
   }
-  addItem(String value){
+
+  addItem(String value) {
     var item = Item(nome: value);
     itens.add(item);
     update(['addItem']);
   }
-  removerItem(Item index){
+
+  removerItem(Item index) {
     itens.remove(index);
     update(['addItem']);
   }
@@ -129,31 +140,42 @@ class HomeController extends GetxController {
     _carregando.value = value;
   }
 
-  listarVideo({videoId}) async {
-    carregando = true;
-    videos = await videoRepository.listar();
-    videosFiltrado = videos;
-    videos.forEach((element) async {
-      WebInfo info = await WebAnalyzer.getInfo(element.url);
-      element.nome = info.title;
-    });
-    videosQueGostei = videos.map((e) {
-      if(e.voceGostou) return e;
-    }).toList();
-    carregando = false;
-    update();
-    mudarCor();
+  listarVideo({bool refresh=false}) async {
+    if(refresh){
+      var list = List<Video>();
+      carregandoRefresh = true;
+      list = await videoRepository.listar(page, texteditingController.text);
+      videos.addAll(list);
+      page += 1;
+      videosFiltrado = videos;
+      videosQueGostei = videos.map((e) {
+        if (e.voceGostou) return e;
+      }).toList();
+      carregandoRefresh = false;
+      update();
+    }else {
+      carregando = true;
+      videos = await videoRepository.listar(page, texteditingController.text);
+      // page += 1;
+      videosFiltrado = videos;
+      videosQueGostei = videos.map((e) {
+        if (e.voceGostou) return e;
+      }).toList();
+      carregando = false;
+      update();
+      mudarCor();
+    }
   }
 
-  filtrarVideo(String nome) async {
-    videosFiltrado = List<Video>();
-    videos.forEach((element) {
-      if(element.nome?.toLowerCase().contains(nome.toLowerCase())){
-        videosFiltrado.add(element);
-      }
-    });
-    update();
-  }
+  // filtrarVideo(String nome) async {
+  //   videosFiltrado = List<Video>();
+  //   videos.forEach((element) {
+  //     if (element.nome?.toLowerCase().contains(nome.toLowerCase())) {
+  //       videosFiltrado.add(element);
+  //     }
+  //   });
+  //   update();
+  // }
 
   excluirComentario(int comentarioId, int videoId) async {
     await comentarioRepository.apagar(comentarioId);
@@ -175,6 +197,8 @@ class HomeController extends GetxController {
 
   Future<bool> inserirVideo() async {
     video.itens = itens;
+    WebInfo info = await WebAnalyzer.getInfo(video.url);
+    video.nome = info.title;
     video.pessoa = Pessoa(id: Get.find<AppController>().usuario.pessoa.id);
     return await videoRepository.salvar(video);
   }
@@ -185,31 +209,52 @@ class HomeController extends GetxController {
   }
 
   salvarGosto(int idVideo) async {
-    var idGosto = IdGosto(pessoa: Pessoa(id: Get.find<AppController>().usuario.pessoa.id), video: Video(id: idVideo));
+    var idGosto = IdGosto(
+        pessoa: Pessoa(id: Get.find<AppController>().usuario.pessoa.id),
+        video: Video(id: idVideo));
     var salvar = await gostoRepository.salvar(Gosto(idGosto: idGosto));
-    if(salvar){
-      var video = videos.firstWhere((element) => element.id==idVideo);
+    if (salvar) {
+      var video = videos.firstWhere((element) => element.id == idVideo);
       video.voceGostou = true;
-    }else{
-      var video = videos.firstWhere((element) => element.id==idVideo);
+    } else {
+      var video = videos.firstWhere((element) => element.id == idVideo);
       video.voceGostou = false;
     }
     update(['salverGosto']);
   }
 
   mudarCor() async {
-    for(int i=0;i<4000000;i++){
-      await Future.delayed(Duration(seconds: 2),(){
-        if(color==Colors.red) color = Colors.green;
-        else if(color==Colors.green) color = Colors.blue;
-        else color = Colors.red;
+    for (int i = 0; i < 4000000; i++) {
+      await Future.delayed(Duration(seconds: 2), () {
+        if (color == Colors.red)
+          color = Colors.green;
+        else if (color == Colors.green)
+          color = Colors.blue;
+        else
+          color = Colors.red;
       });
       update();
     }
   }
 
   Future<bool> atualizarDescricaoVideo(Video video) async {
-   return await videoRepository.atlauizar(video);
+    return await videoRepository.atlauizar(video);
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    scrollController.addListener(() {
+      if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+         listarVideo(refresh: true);
+      }
+    });
+  }
+
+  @override
+  void onClose() {
+    page = 0;
+    scrollController.dispose();
+    super.onClose();
+  }
 }

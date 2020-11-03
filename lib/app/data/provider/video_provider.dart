@@ -7,9 +7,9 @@ import 'package:socialfood/app/res/static.dart';
 class VideoProvider{
   final httpfat = FaturaHttp();
 
-  Future<List<Video>> listar() async {
+  Future<List<Video>> listar(int page, String nome) async {
     final response =
-    await httpfat.get("${url}video",headers: <String,String>{
+    await httpfat.get("${url}video?page=$page&&size=15&&nome=$nome",headers: <String,String>{
       "Content-Type":"application/json"
     });
     if (response.statusCode == 200) {

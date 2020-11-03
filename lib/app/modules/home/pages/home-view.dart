@@ -132,7 +132,8 @@ class HomeView extends GetView<HomeController> {
             child: TextFormField(
               controller: controller.texteditingController,
               onFieldSubmitted: (s) {
-                controller.filtrarVideo(s);
+                controller.page = 0;
+                controller.listarVideo();
                 controller.searchBar = false;
               },
               style: TextStyle(color: Colors.white),

@@ -54,7 +54,7 @@ class FavoritoPage extends GetView<FavoritoController> {
       ),
       body: GetBuilder<FavoritoController>(
         initState: (v) {
-          controller.listarVideoQueGostei();
+          controller.listarVideoQueGostei('');
         },
         builder: (_) {
           return Visibility(
@@ -205,7 +205,7 @@ class FavoritoPage extends GetView<FavoritoController> {
                                 icon: Icon(Ionicons.ios_chatboxes),
                                 onPressed: () => Get.bottomSheet(BottomSheet(
                                     onClosing: () =>
-                                        {controller.listarVideoQueGostei()},
+                                        {controller.listarVideoQueGostei('')},
                                     builder: (context) {
                                       return ComentariosView(
                                         videoId: video.id,
