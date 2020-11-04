@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_link_preview/flutter_link_preview.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:socialfood/app/data/model/Item.dart';
 import 'package:socialfood/app/data/model/comentario.dart';
 import 'package:socialfood/app/data/model/gosto.dart';
@@ -20,8 +21,10 @@ class HomeController extends GetxController {
   final comentarioRepository = ComentarioRepository();
   final gostoRepository = GostoRepository();
   final texteditingController = TextEditingController();
-  final scrollController = ScrollController();
+  var scrollController = ScrollController();
   int page = 0;
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
   final PageController controller = PageController(
     initialPage: 0,
   );
@@ -32,7 +35,6 @@ class HomeController extends GetxController {
   final _carregandoRefresh = false.obs;
   final _videos = List<Video>().obs;
   final _videosFiltrado = List<Video>().obs;
-  final _videosQueGostei = List<Video>().obs;
   final _comentarios = List<Comentario>().obs;
   final _comentario = Comentario().obs;
   final _video = Video().obs;
@@ -46,6 +48,7 @@ class HomeController extends GetxController {
 
   set carregandoRefresh(bool value) {
     _carregandoRefresh.value = value;
+    update(['carregandoRefresh']);
   }
 
   List<Video> get videosFiltrado => _videosFiltrado.value;
@@ -97,12 +100,6 @@ class HomeController extends GetxController {
     _color.value = value;
   }
 
-  List<Video> get videosQueGostei => _videosQueGostei.value;
-
-  set videosQueGostei(value) {
-    _videosQueGostei.value = value;
-  }
-
   get permitirComentarios => _permitirComentarios;
 
   set permitirComentarios(value) {
@@ -140,28 +137,32 @@ class HomeController extends GetxController {
     _carregando.value = value;
   }
 
-  listarVideo({bool refresh=false}) async {
-    if(refresh){
+  listarVideo({bool refresh = false}) async {
+    if (refresh) {
       var list = List<Video>();
       carregandoRefresh = true;
+      page += 1;
       list = await videoRepository.listar(page, texteditingController.text);
       videos.addAll(list);
-      page += 1;
       videosFiltrado = videos;
-      videosQueGostei = videos.map((e) {
-        if (e.voceGostou) return e;
-      }).toList();
       carregandoRefresh = false;
+      if (list.length == 0) {
+        refreshController.loadNoData();
+      } else {
+        refreshController.loadComplete();
+
+      }
       update();
-    }else {
+    } else {
+      page = 0;
       carregando = true;
       videos = await videoRepository.listar(page, texteditingController.text);
       // page += 1;
       videosFiltrado = videos;
-      videosQueGostei = videos.map((e) {
-        if (e.voceGostou) return e;
-      }).toList();
       carregando = false;
+      refreshController.loadComplete();
+      refreshController.refreshCompleted();
+      // refreshController.loadComplete();
       update();
       mudarCor();
     }
@@ -244,17 +245,14 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    scrollController.addListener(() {
-      if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-         listarVideo(refresh: true);
-      }
-    });
+    // scrollController = ScrollController();
   }
 
   @override
   void onClose() {
     page = 0;
-    scrollController.dispose();
+    // scrollController.dispose();
+    // scrollController = null;
     super.onClose();
   }
 }

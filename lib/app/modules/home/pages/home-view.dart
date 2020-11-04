@@ -91,7 +91,7 @@ class HomeView extends GetView<HomeController> {
         IconButton(
             icon: Icon(Ionicons.ios_heart_empty),
             onPressed: () {
-              Get.toNamed(Routes.FAVORITO);
+              Get.offNamed(Routes.FAVORITO);
             }),
         find.usuario.grupo == 'administrador'
             ? IconButton(

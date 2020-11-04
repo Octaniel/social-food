@@ -46,7 +46,7 @@ class FavoritoPage extends GetView<FavoritoController> {
         ),
         actions: [
           IconButton(
-              icon: Icon(Ionicons.ios_home),
+              icon: Icon(Icons.restaurant_menu),
               onPressed: () {
                 Get.offNamed(Routes.HOME);
               }),
@@ -157,12 +157,18 @@ class FavoritoPage extends GetView<FavoritoController> {
         '''<iframe src="https://player.vimeo.com/video/$videoID" width=$width height=$height frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>''';
     var htmlData =
         """<iframe width=$width height=$height src="https://www.youtube.com/embed/$videoID" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>""";
-    final wid = provider == 'youtube'
-        ? Html(
-            data: htmlData,
-          )
-        : Html(
-            data: htmlDataVimeo,
+    final wid = GetPlatform.isAndroid || GetPlatform.isIOS
+        ? provider == 'youtube'
+            ? Html(
+                data: htmlData,
+              )
+            : Html(
+                data: htmlDataVimeo,
+              )
+        : Container(
+            width: width,
+            height: height,
+            color: Colors.blueGrey,
           );
     print(video?.descricao);
     final textEditingControler = TextEditingController();

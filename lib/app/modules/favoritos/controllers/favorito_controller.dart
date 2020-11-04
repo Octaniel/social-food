@@ -97,14 +97,14 @@ class FavoritoController extends GetxController{
   }
 
   listarVideoQueGostei(String nome, {bool refresh=false}) async {
-    final listVideoAux = List<Video>();
+    // final listVideoAux = List<Video>();
     carregando = true;
-    videos = await videoRepository.listar(page,'');
+    videos = await videoRepository.listarQueGostei(page,'');
     page += 1;
-    videos.forEach((element) {
-      if(element.voceGostou) listVideoAux.add(element);
-    });
-    videos = listVideoAux;
+    // videos.forEach((element) {
+    //   if(element.voceGostou) listVideoAux.add(element);
+    // });
+    // videos = listVideoAux;
     carregando = false;
     update();
     mudarCor();

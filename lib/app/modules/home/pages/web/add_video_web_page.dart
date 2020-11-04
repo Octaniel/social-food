@@ -23,7 +23,8 @@ class AddVideoWebPage extends GetView<HomeController> {
       appBar: AppBar(
         title: CircleAvatar(
             backgroundImage: NetworkImage(
-                Get.find<AppController>().usuario.pessoa?.fotoUrl??'https://p7.hiclipart.com/preview/340/956/944/computer-icons-user-profile-head-ico-download.jpg',
+                Get.find<AppController>().usuario.pessoa?.fotoUrl ??
+                    'https://p7.hiclipart.com/preview/340/956/944/computer-icons-user-profile-head-ico-download.jpg',
                 scale: 2)),
         actions: [
           IconButton(
@@ -136,35 +137,62 @@ class AddVideoWebPage extends GetView<HomeController> {
                         direction: Axis.horizontal,
                         children: controller.itens
                             .map((e) => Container(
-                                  width: Get.width * .25 - 12,
-                                  child: Row(
+                                  width: Get.width * .25 - 32,
+                                  child: Stack(
                                     children: [
-                                      Container(
-                                        width: Get.width * .20 - 12,
-                                        child: TextField(
-                                          onChanged: (v) {
-                                            e.nome = v;
-                                          },
-                                          decoration: InputDecoration(
-                                            hintText:
-                                                'Item(${controller.itens.indexOf(e) + 1})',
-                                            // contentPadding: EdgeInsets.all(5)
+                                      Card(
+                                        elevation: 3,
+                                        child: Container(
+                                          margin: EdgeInsets.all(5),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                  'Item(${controller.itens.indexOf(e) + 1})'),
+                                              Container(
+                                                width: Get.width * .20 - 12,
+                                                child: TextField(
+                                                  onChanged: (v) {
+                                                    e.nome = v;
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    hintText: 'Nome',
+                                                    // contentPadding: EdgeInsets.all(5)
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: Get.width * .20 - 12,
+                                                child: TextField(
+                                                  onChanged: (v) {
+                                                    e.link = v;
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    hintText: 'Link',
+                                                    // contentPadding: EdgeInsets.all(5)
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
                                       // SizedBox(
                                       //   width: 5,
                                       // ),
-                                      Container(
-                                        height: 30,
-                                        width: 30,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                        child: InkWell(
-                                          onTap: () =>
-                                              controller.removerItem(e),
-                                          child: Icon(FontAwesomeIcons.times),
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: Container(
+                                          margin: EdgeInsets.only(right: 20),
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(50)),
+                                          child: InkWell(
+                                            onTap: () =>
+                                                controller.removerItem(e),
+                                            child: Icon(FontAwesomeIcons.times, color: Colors.grey[900],size: 14,),
+                                          ),
                                         ),
                                       ),
                                     ],

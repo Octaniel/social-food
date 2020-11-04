@@ -8,6 +8,10 @@ class VideoRepository{
     return await videoProvider.listar(page, nome);
   }
 
+  Future<List<Video>> listarQueGostei(int page, String nome) async {
+    return await videoProvider.listarQueGostei(page, nome);
+  }
+
   Future<bool> salvar(Video video)async{
     return await videoProvider.salvar(video);
   }
