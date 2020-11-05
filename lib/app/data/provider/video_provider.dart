@@ -13,7 +13,8 @@ class VideoProvider{
       "Content-Type":"application/json"
     });
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(decoder(response.body));
+      var decode = utf8.decode(response.bodyBytes);
+      List jsonResponse = json.decode(decode);
       var listUsuarioModel = jsonResponse.map<Video>((map) {
         return Video.fromJson(map);
       }).toList();
@@ -31,7 +32,7 @@ class VideoProvider{
       "Content-Type":"application/json"
     });
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(decoder(response.body));
+      List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       var listUsuarioModel = jsonResponse.map<Video>((map) {
         return Video.fromJson(map);
       }).toList();

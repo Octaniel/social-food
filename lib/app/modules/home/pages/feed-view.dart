@@ -21,18 +21,6 @@ class FeedView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     controller.listarVideo();
     return GetBuilder<HomeController>(
-      // initState: (d) {
-      //   controller.scrollController.addListener(() {
-      //     if (controller.scrollController.position.pixels ==
-      //         controller.scrollController.position.maxScrollExtent) {
-      //       print('uuuoou');
-      //       controller.listarVideo(refresh: true);
-      //     }
-      //   });
-      // },
-      // dispose: (s) {
-      //   controller.scrollController.dispose();
-      // },
       builder: (_) {
         return Visibility(
             visible: !controller.carregando,
@@ -45,136 +33,99 @@ class FeedView extends GetView<HomeController> {
                           : 'Nenhum vídeo relaoicnado com a sua pesquisa no momento',
                     ),
                   )
-                : Stack(
-                    children: [
-                      SmartRefresher(
-                        enablePullDown: true,
-                        enablePullUp: true,
-                        onRefresh: (){
-                          controller.listarVideo(refresh: false);
-                        },
-                        onLoading: (){
-                          controller.listarVideo(refresh: true);
-                        },
-                        controller: controller.refreshController,
-                        footer: CustomFooter(
-                          builder: (BuildContext context,LoadStatus mode){
-                            Widget body ;
-                            if(mode==LoadStatus.idle){
-                              body =  Text("Carregando");
-                            }
-                            else if(mode==LoadStatus.loading){
-                              body =  CircularProgressIndicator();
-                            }
-                            else if(mode == LoadStatus.canLoading){
-                              body =  CircularProgressIndicator(
-                                              backgroundColor: Colors.cyanAccent,
-                                              valueColor:
-                                                  new AlwaysStoppedAnimation<Color>(
-                                                      Colors.red));
-                            }
-                            else{
-                              body = Text("Sem mais vídeos");
-                            }
-                            return Container(
-                              height: 55.0,
-                              child: Center(child:body),
-                            );
-                          },
-                        ),
-                        child: ListView.builder(
-                            // controller: controller.scrollController,
-                            itemCount: controller.videosFiltrado.length,
-                            itemBuilder: (context, index) {
-                              Video video = controller.videosFiltrado[index];
+                : SmartRefresher(
+                    enablePullDown: true,
+                    enablePullUp: true,
+                    onRefresh: () {
+                      controller.listarVideo(refresh: false);
+                    },
+                    onLoading: () {
+                      controller.listarVideo(refresh: true);
+                    },
+                    controller: controller.refreshController,
+                    footer: CustomFooter(
+                      builder: (BuildContext context, LoadStatus mode) {
+                        Widget body;
+                        if (mode == LoadStatus.idle) {
+                          body = Text("Carregando");
+                        } else if (mode == LoadStatus.loading) {
+                          body = CircularProgressIndicator();
+                        } else if (mode == LoadStatus.canLoading) {
+                          body = CircularProgressIndicator(
+                              backgroundColor: Colors.cyanAccent,
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.red));
+                        } else {
+                          body = Text("Sem mais vídeos");
+                        }
+                        return Container(
+                          height: 55.0,
+                          child: Center(child: body),
+                        );
+                      },
+                    ),
+                    child: ListView.builder(
+                        // controller: controller.scrollController,
+                        itemCount: controller.videosFiltrado.length,
+                        itemBuilder: (context, index) {
+                          Video video = controller.videosFiltrado[index];
 
-                              return Column(
-                                children: [
-                                  Container(
-                                      margin: EdgeInsets.all(10),
-                                      width: Get.width,
-                                      height: Get.height * .42 < 350
-                                          ? 350
-                                          : Get.height * .38,
-                                      child: Card(
-                                          color: isDarkMode
-                                              ? Colors.grey[800]
-                                              : Colors.grey[200],
-                                          elevation: 0,
-                                          child: Column(
-                                            children: [
-                                              // ListTile(
-                                              //   title: TextWidget(
-                                              //       text:
-                                              //           '${video.pessoa.nome} ${video.pessoa.apelido}'),
-                                              //
-                                              //   leading: CircleAvatar(
-                                              //       backgroundImage: NetworkImage(
-                                              //           video.pessoa.fotoUrl)),
-                                              //   // leading: CircleAvatar(
-                                              //   //   child: Icon(Icons.person),
-                                              //   // ),
-                                              // ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              renderLinkPreview(
-                                                                  video.url,
-                                                                  true,
-                                                                  video)));
-                                                },
-                                                child: renderLinkPreview1(video),
-                                              ),
-                                            ],
-                                          ))),
-                                  Visibility(
-                                    visible: index % 2 != 0,
-                                    replacement: Text(""),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 10),
-                                      height: 50,
-                                      width: Get.width,
-                                      decoration: BoxDecoration(
-                                        color: controller.color,
-                                        borderRadius: BorderRadius.circular(11),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Espaço para publicidade',
-                                          style: TextStyle(
-                                            fontFamily: 'Segoe UI',
-                                            fontSize: 20,
-                                            color: const Color(0xffffffff),
+                          return Column(
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  width: Get.width,
+                                  height: Get.height * .30 < 300
+                                      ? 300
+                                      : Get.height * .30,
+                                  child: Card(
+                                      color: isDarkMode
+                                          ? Colors.grey[800]
+                                          : Colors.grey[200],
+                                      elevation: 0,
+                                      child: Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          renderLinkPreview(
+                                                              video.url,
+                                                              true,
+                                                              video)));
+                                            },
+                                            child: renderLinkPreview1(video),
                                           ),
-                                        ),
+                                        ],
+                                      ))),
+                              Visibility(
+                                visible: index % 2 != 0,
+                                replacement: Text(""),
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  height: 50,
+                                  width: Get.width,
+                                  decoration: BoxDecoration(
+                                    color: controller.color,
+                                    borderRadius: BorderRadius.circular(11),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Espaço para publicidade',
+                                      style: TextStyle(
+                                        fontFamily: 'Segoe UI',
+                                        fontSize: 20,
+                                        color: const Color(0xffffffff),
                                       ),
                                     ),
                                   ),
-                                ],
-                              );
-                            }),
-                      ),
-                      // GetBuilder<HomeController>(
-                      //   builder: (_) {
-                      //     return controller.carregandoRefresh
-                      //         ? Align(
-                      //             alignment: Alignment.bottomCenter,
-                      //             child: CircularProgressIndicator(
-                      //               backgroundColor: Colors.cyanAccent,
-                      //               valueColor:
-                      //                   new AlwaysStoppedAnimation<Color>(
-                      //                       Colors.red),
-                      //             ),
-                      //           )
-                      //         : Text('');
-                      //   },
-                      //   id: 'carregandoRefresh',
-                      // )
-                    ],
+                                ),
+                              ),
+                            ],
+                          );
+                        }),
                   ));
       },
       id: 'videosFiltrado',
@@ -182,7 +133,7 @@ class FeedView extends GetView<HomeController> {
   }
 
   Widget renderLinkPreview(String link, bool total, Video video) {
-    double width = total ? Get.width : Get.width * .8;
+    double width = total ? Get.width : Get.width * .85;
     double height = total
         ? Get.height * .4 < 250
             ? 250
@@ -208,7 +159,6 @@ class FeedView extends GetView<HomeController> {
             height: height,
             color: Colors.blueGrey,
           );
-    // if(total) print('hhhhhhhhhh${video.descricao}');
     final textEditingControler = TextEditingController();
     textEditingControler.text =
         video != null && video.descricao != null ? video.descricao : '';
@@ -217,12 +167,24 @@ class FeedView extends GetView<HomeController> {
         ? Scaffold(
             appBar: AppBar(
               title: Text('Janela de video'),
+              centerTitle: true,
             ),
             body: SafeArea(
               child: Center(
                 child: ListView(
                   children: [
                     wid,
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      '${video.nome}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                     SizedBox(
                       height: 3,
                     ),

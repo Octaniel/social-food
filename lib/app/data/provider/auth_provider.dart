@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cross_local_storage/cross_local_storage.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:socialfood/app/data/model/usuario.dart';
 import 'package:socialfood/app/res/fatura_http.dart';
@@ -15,7 +15,7 @@ class AuthProvider {
     try {
       var response = await httpClient.get(baseUrl + 'home');
       if (response.statusCode == 200) {
-        List jsonResponse = json.decode(decoder(response.body));
+        List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
         var listUsuario = jsonResponse.map<Usuario>((map) {
           return Usuario.fromJson(map);
         }).toList();
@@ -31,7 +31,7 @@ class AuthProvider {
     var response = await FaturaHttp().get('${url}usuario/$id',
         headers: <String, String>{"Content-Type": "application/json"});
     if (response.statusCode == 200) {
-      var jsonResponse = json.decode(decoder(response.body));
+      var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       return Usuario.fromJson(jsonResponse);
     } else {
       print('erro -get');
@@ -51,14 +51,14 @@ class AuthProvider {
         },
         body: login);
     if (response.statusCode == 200) {
-      final storage = await LocalStorage.getInstance();
-      var decode = jsonDecode(response.body);
-      storage.setString("nomeUsuario", decode["nome"]);
-      storage.setInt("idUsuario", decode["idUsuario"]);
-      storage.setString("access_token", decode["access_token"]);
-      storage.setString("date_expires_in", DateTime.now().toString());
-      storage.setString("expires_in", decode["expires_in"].toString());
-      storage.setString("refresh_token", decode["refresh_token"].toString());
+      final storage = GetStorage();
+      var decode = json.decode(utf8.decode(response.bodyBytes));
+      storage.write("nomeUsuario", decode["nome"]);
+      storage.write("idUsuario", decode["idUsuario"]);
+      storage.write("access_token", decode["access_token"]);
+      storage.write("date_expires_in", DateTime.now().toString());
+      storage.write("expires_in", decode["expires_in"].toString());
+      storage.write("refresh_token", decode["refresh_token"].toString());
       return true;
     }
     return false;
@@ -87,10 +87,12 @@ class AuthProvider {
 
   Future<bool> logout() async {
     final httpfat = FaturaHttp();
-    final storage = await LocalStorage.getInstance();
+    final storage = GetStorage();
     var response = await httpfat.delete("${baseUrl}tokens/revoke");
     if (response.statusCode == 204) {
-      await storage.clear();
+      await storage.erase();
+      // await storage.setBool("removido", true);
+      // await storage.reload();
       print(true);
       return true;
     }
@@ -99,9 +101,9 @@ class AuthProvider {
   }
 
   Future<bool> accsessTokenExpirado() async {
-    final storage = await LocalStorage.getInstance();
-    var read = storage.getString("date_expires_in");
-    var read1 = storage.getString("expires_in");
+    final storage = GetStorage();
+    var read = storage.read("date_expires_in");
+    var read1 = storage.read("expires_in");
     if (read == null) return true;
     var date = DateTime.parse(read);
     int i = int.parse(read1);
@@ -113,8 +115,8 @@ class AuthProvider {
   }
 
   Future<void> refreshToken() async {
-    final storage = await LocalStorage.getInstance();
-    var read1 = storage.getString("refresh_token");
+    final storage = GetStorage();
+    var read1 = storage.read("refresh_token");
     var response =
         await http.post("${baseUrl}oauth/token", headers: <String, String>{
       "Content-Type": "application/x-www-form-urlencoded",
@@ -124,10 +126,10 @@ class AuthProvider {
       "refresh_token": read1 == null ? "" : read1
     });
     if (response.statusCode == 200) {
-      var decode = jsonDecode(response.body);
-      storage.setString("access_token", decode["access_token"]);
-      storage.setString("date_expires_in", DateTime.now().toString());
-      storage.setString("expires_in", decode["expires_in"].toString());
+      var decode = json.decode(utf8.decode(response.bodyBytes));
+      storage.write("access_token", decode["access_token"]);
+      storage.write("date_expires_in", DateTime.now().toString());
+      storage.write("expires_in", decode["expires_in"].toString());
     }
   }
 

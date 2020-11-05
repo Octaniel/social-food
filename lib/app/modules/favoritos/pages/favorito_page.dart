@@ -76,9 +76,9 @@ class FavoritoPage extends GetView<FavoritoController> {
                             Container(
                                 margin: EdgeInsets.all(10),
                                 width: Get.width,
-                                height: Get.height * .42 < 350
-                                    ? 350
-                                    : Get.height * .38,
+                                height: Get.height * .30 < 300
+                                    ? 300
+                                    : Get.height * .30,
                                 child: Card(
                                     color: isDarkMode
                                         ? Colors.grey[800]
@@ -86,18 +86,6 @@ class FavoritoPage extends GetView<FavoritoController> {
                                     elevation: 0,
                                     child: Column(
                                       children: [
-                                        // ListTile(
-                                        //   title: TextWidget(
-                                        //       text:
-                                        //           '${video.pessoa.nome} ${video.pessoa.apelido}'),
-                                        //
-                                        //   leading: CircleAvatar(
-                                        //       backgroundImage:
-                                        //           NetworkImage(video.pessoa.fotoUrl)),
-                                        //   // leading: CircleAvatar(
-                                        //   //   child: Icon(Icons.person),
-                                        //   // ),
-                                        // ),
                                         GestureDetector(
                                           onTap: () {
                                             Navigator.push(
@@ -111,11 +99,6 @@ class FavoritoPage extends GetView<FavoritoController> {
                                           },
                                           child: renderLinkPreview1(video.url),
                                         ),
-                                        // Container(
-                                        //   height: 270,
-                                        //   width: 270,
-                                        //   color: Colors.greenAccent,
-                                        // ),
                                       ],
                                     ))),
                             Visibility(
@@ -177,11 +160,26 @@ class FavoritoPage extends GetView<FavoritoController> {
     final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
     return total
         ? Scaffold(
+      appBar: AppBar(
+        title: Text('Janela de video'),
+        centerTitle: true,
+      ),
             body: SafeArea(
               child: Center(
                 child: ListView(
                   children: [
                     wid,
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      '${video.nome}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                     SizedBox(
                       height: 3,
                     ),

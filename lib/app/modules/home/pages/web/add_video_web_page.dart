@@ -16,6 +16,7 @@ class AddVideoWebPage extends GetView<HomeController> {
   final _ttxeEditingcontroller4 = TextEditingController();
   final _ttxeEditingcontroller5 = TextEditingController();
   final _ttxeEditingcontroller6 = TextEditingController();
+  final _ttxeEditingcontroller7 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +47,46 @@ class AddVideoWebPage extends GetView<HomeController> {
             builder: (_) {
               return ListView(
                 children: [
-                  TextFormField(
-                    controller: _ttxeEditingcontroller1,
-                    onChanged: (v) => controller.video.url = v,
-                    decoration: InputDecoration(
-                        labelStyle: GoogleFonts.muli(),
-                        labelText: 'Url do vídeo'),
+                  Row(
+                    children: [
+                      Container(
+                        width: Get.width * .5 - 12,
+                        child: TextField(
+                          controller: _ttxeEditingcontroller7,
+                          onChanged: (v) {
+                            controller.video.nome = v;
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Nome do vídeo',
+                            // contentPadding: EdgeInsets.all(5)
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Container(
+                        width: Get.width * .5 - 12,
+                        child: TextField(
+                          controller: _ttxeEditingcontroller1,
+                          onChanged: (v) {
+                            controller.video.url = v;
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Url do vídeo',
+                            // contentPadding: EdgeInsets.all(5)
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                  // TextFormField(
+                  //   controller: _ttxeEditingcontroller1,
+                  //   onChanged: (v) => controller.video.url = v,
+                  //   decoration: InputDecoration(
+                  //       labelStyle: GoogleFonts.muli(),
+                  //       labelText: 'Url do vídeo'),
+                  // ),
                   SizedBox(
                     height: 20,
                   ),
@@ -191,7 +225,11 @@ class AddVideoWebPage extends GetView<HomeController> {
                                           child: InkWell(
                                             onTap: () =>
                                                 controller.removerItem(e),
-                                            child: Icon(FontAwesomeIcons.times, color: Colors.grey[900],size: 14,),
+                                            child: Icon(
+                                              FontAwesomeIcons.times,
+                                              color: Colors.grey[900],
+                                              size: 14,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -248,28 +286,51 @@ class AddVideoWebPage extends GetView<HomeController> {
   }
 
   inserirVideo() async {
-    if (await controller.inserirVideo()) {
-      Get.rawSnackbar(
-          icon: Icon(FontAwesomeIcons.check),
-          duration: Duration(seconds: 2),
-          backgroundColor: Color(0xFF3CFEB5),
-          messageText: Text(
-            'Adiciodano com sucesso',
-            style: TextStyle(
-                color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-          borderRadius: 10,
-          margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
-      Future.delayed(Duration(seconds: 2), () {
-        _ttxeEditingcontroller1.text = '';
-        _ttxeEditingcontroller2.text = '';
-        _ttxeEditingcontroller3.text = '';
-        _ttxeEditingcontroller4.text = '';
-        _ttxeEditingcontroller5.text = '';
-        _ttxeEditingcontroller6.text = '';
-        controller.video = Video();
-        controller.itens = List<Item>();
-      });
+    if (_ttxeEditingcontroller1.text.isNotEmpty &&
+        _ttxeEditingcontroller1.text.contains("https://") &&
+        _ttxeEditingcontroller7.text.isNotEmpty) {
+      if (await controller.inserirVideo()) {
+        Get.rawSnackbar(
+            icon: Icon(FontAwesomeIcons.check),
+            duration: Duration(seconds: 2),
+            backgroundColor: Color(0xFF3CFEB5),
+            messageText: Text(
+              'Adiciodano com sucesso',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+            borderRadius: 10,
+            margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
+        Future.delayed(Duration(seconds: 2), () {
+          _ttxeEditingcontroller1.text = '';
+          _ttxeEditingcontroller2.text = '';
+          _ttxeEditingcontroller3.text = '';
+          _ttxeEditingcontroller4.text = '';
+          _ttxeEditingcontroller5.text = '';
+          _ttxeEditingcontroller6.text = '';
+          controller.video = Video();
+          controller.itens = List<Item>();
+        });
+      } else {
+        Get.rawSnackbar(
+            icon: Icon(
+              FontAwesomeIcons.times,
+              color: Colors.white,
+            ),
+            duration: Duration(seconds: 2),
+            backgroundColor: Color(0xFFFE3C3C),
+            messageText: Text(
+              'Houve problema no envio',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+            borderRadius: 10,
+            margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
+      }
     } else {
       Get.rawSnackbar(
           icon: Icon(
@@ -279,7 +340,7 @@ class AddVideoWebPage extends GetView<HomeController> {
           duration: Duration(seconds: 2),
           backgroundColor: Color(0xFFFE3C3C),
           messageText: Text(
-            'Houve problema no envio',
+            'Verifique se preencheste bem os campos url do vídeo e nome do vídeo',
             style: TextStyle(
                 color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
           ),

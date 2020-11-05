@@ -1,5 +1,5 @@
-  import 'package:cross_local_storage/cross_local_storage.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:socialfood/app/data/repository/auth_repository.dart';
 
 import 'data/model/usuario.dart';
@@ -29,8 +29,8 @@ class AppController extends GetxController {
   }
 
   Future<void> refreshUsuario() async {
-    final storage = await LocalStorage.getInstance();
-    var id = storage.getInt('idUsuario');
+    final storage = GetStorage();
+    var id = storage.read('idUsuario');
     usuario = await repository.getId(id);
     update();
   }

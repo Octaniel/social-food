@@ -27,7 +27,7 @@ class ComentarioPrivider{
       "Content-Type":"application/json"
     });
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(decoder(response.body));
+      List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       var listUsuarioModel = jsonResponse.map<Comentario>((map) {
         return Comentario.fromMap(map);
       }).toList();

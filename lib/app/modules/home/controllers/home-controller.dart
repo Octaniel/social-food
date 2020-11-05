@@ -198,8 +198,10 @@ class HomeController extends GetxController {
 
   Future<bool> inserirVideo() async {
     video.itens = itens;
-    WebInfo info = await WebAnalyzer.getInfo(video.url);
-    video.nome = info.title;
+    if(GetPlatform.isAndroid||GetPlatform.isIOS){
+      WebInfo info = await WebAnalyzer.getInfo(video.url);
+      video.nome = info.title;
+    }
     video.pessoa = Pessoa(id: Get.find<AppController>().usuario.pessoa.id);
     return await videoRepository.salvar(video);
   }
