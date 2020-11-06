@@ -25,7 +25,7 @@ class HomeView extends GetView<HomeController> {
       appBar: renderAppBar(),
       body: renderBody(),
       drawer: CustomDrawer(),
-      bottomNavigationBar: renderBottomMenu(),
+      // bottomNavigationBar: renderBottomMenu(),
     );
   }
 
@@ -97,7 +97,7 @@ class HomeView extends GetView<HomeController> {
             ? IconButton(
                 icon: Icon(Icons.video_call),
                 onPressed: () {
-                  Get.toNamed(Routes.INSERIRVIDEO);
+                  GetPlatform.isWeb?Get.toNamed(Routes.ADDVIDEOWEB):Get.toNamed(Routes.INSERIRVIDEO);
                 })
             : Text(''),
       ],

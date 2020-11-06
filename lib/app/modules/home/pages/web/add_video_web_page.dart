@@ -310,6 +310,7 @@ class AddVideoWebPage extends GetView<HomeController> {
           _ttxeEditingcontroller4.text = '';
           _ttxeEditingcontroller5.text = '';
           _ttxeEditingcontroller6.text = '';
+          _ttxeEditingcontroller7.text = '';
           controller.video = Video();
           controller.itens = List<Item>();
         });

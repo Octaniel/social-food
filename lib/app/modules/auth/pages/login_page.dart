@@ -152,8 +152,8 @@ class LoginPage extends GetView<AuthController> {
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
         Future.delayed(Duration(seconds: 2), () {
-          // Get.offAllNamed(Routes.ADDVIDEOWEB);
-          GetPlatform.isWeb?Get.offAllNamed(Routes.ADDVIDEOWEB):Get.offAllNamed(Routes.HOME);
+          Get.offAllNamed(Routes.HOME);
+          // GetPlatform.isWeb?Get.offAllNamed(Routes.ADDVIDEOWEB):Get.offAllNamed(Routes.HOME);
         });
       } else {
         Get.rawSnackbar(
