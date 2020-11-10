@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>964138430615-dc3seinane5atlhntf5uebcostnbjbpc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.964138430615-dc3seinane5atlhntf5uebcostnbjbpc</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>964138430615-ruhq8feocvqj51ejfvl4576f0nvlfr53.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAfFg1UL_3D_hqZUULEPXTtBnfPcdZbk-Y</string>
+	<key>GCM_SENDER_ID</key>
+	<string>964138430615</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.recsee.socialfood</string>
+	<key>PROJECT_ID</key>
+	<string>feedfood-dd497</string>
+	<key>STORAGE_BUCKET</key>
+	<string>feedfood-dd497.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:964138430615:ios:8f20a0b2a265b52b5339d2</string>
+	<key>DATABASE_URL</key>
+	<string>https://feedfood-dd497.firebaseio.com</string>
+</dict>
+</plist>
