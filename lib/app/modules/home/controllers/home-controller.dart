@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:firebase_admob/firebase_admob.dart';
+// import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_link_preview/flutter_link_preview.dart';
 import 'package:get/get.dart';
@@ -24,7 +24,7 @@ class HomeController extends GetxController {
   final gostoRepository = GostoRepository();
   final texteditingController = TextEditingController();
   var scrollController = ScrollController();
-  final cusntomAddmob = CunstomAddmob();
+  // final cusntomAddmob = CunstomAddmob();
   int page = 0;
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -250,30 +250,30 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    showBnner();
+    // showBnner();
     // scrollController = ScrollController();
   }
 
-  showBnner(){
-    cusntomAddmob.myBanner()
-    // typically this happens well before the ad is shown
-      ..load()
-      ..show(
-        // Positions the banner ad 60 pixels from the bottom of the screen
-        // anchorOffset: 60.0,
-        // Positions the banner ad 10 pixels from the center of the screen to the right
-        // horizontalCenterOffset: 10.0,
-        // Banner Position
-        anchorType: AnchorType.bottom,
-      );
-  }
+  // showBnner(){
+  //   cusntomAddmob.myBanner()
+  //   // typically this happens well before the ad is shown
+  //     ..load()
+  //     ..show(
+  //       // Positions the banner ad 60 pixels from the bottom of the screen
+  //       // anchorOffset: 60.0,
+  //       // Positions the banner ad 10 pixels from the center of the screen to the right
+  //       // horizontalCenterOffset: 10.0,
+  //       // Banner Position
+  //       anchorType: AnchorType.bottom,
+  //     );
+  // }
 
 
 
   @override
   void onClose() {
     page = 0;
-    cusntomAddmob.myBanner()..load()..dispose();
+    // cusntomAddmob.myBanner()..load()..dispose();
     // scrollController.dispose();
     // scrollController = null;
     super.onClose();
