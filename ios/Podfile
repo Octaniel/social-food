@@ -3,4 +3,4 @@ source 'https://github.com/Artsy/Specs.git'
 
 platform :ios, '9.0'
 inhibit_all_warnings!
-workspace 'Runner.xcodeproj/project.xcworkspace'
+workspace 'Runner.xcworkspace'
