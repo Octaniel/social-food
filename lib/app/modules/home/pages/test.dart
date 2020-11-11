@@ -21,7 +21,7 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
 
     // You should execute `Admob.requestTrackingAuthorization()` here before showing any ad.
 
-    bannerSize = AdmobBannerSize.BANNER;
+    bannerSize = AdmobBannerSize.LARGE_BANNER;
 
     interstitialAd = AdmobInterstitial(
       adUnitId: getInterstitialAdUnitId(),
