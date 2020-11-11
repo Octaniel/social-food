@@ -89,6 +89,9 @@ class HomeView extends GetView<HomeController> {
           },
         ),
         IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () => Get.toNamed(Routes.MYMATERIALAPP)),
+        IconButton(
             icon: Icon(Ionicons.ios_heart_empty),
             onPressed: () {
               Get.offNamed(Routes.FAVORITO);
