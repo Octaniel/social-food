@@ -14,7 +14,7 @@ import 'package:responsive_framework/utils/scroll_behavior.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Admob.initialize(testDeviceIds: ['ca-app-pub-5970556520110458~2410288769']);
+  Admob.initialize();
   await GetStorage.init();
   Get.lazyPut<ThemeController>(() => ThemeController());
   ThemeController.to.getThemeMode();
