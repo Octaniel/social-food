@@ -297,34 +297,6 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
                   ),
                 ),
               ),
-              // Another option is to fix a banner ad to the top or bottom of your content.
-              // Notice that banners are not scrolling, which is a violation of admob policy.
-              //
-              // See: https://github.com/kmcgill88/admob_flutter/issues/194
-              // "banner ads should not move as a user scrolls, as users may try to
-              // click on the menu but end up clicking on the ad accidentally instead.
-              // This specific implementation is against policy and we reserve the right
-              // to disable ad serving to your app."
-
-              // Builder(
-              //   builder: (BuildContext context) {
-              //     final size = MediaQuery.of(context).size;
-              //     final height = max(size.height * .05, 50.0);
-              //     return Container(
-              //       width: size.width,
-              //       height: height,
-              //       child: AdmobBanner(
-              //         adUnitId: getBannerAdUnitId(),
-              //         adSize: AdmobBannerSize.ADAPTIVE_BANNER(
-              //           width: size.width.toInt(),
-              //         ),
-              //         listener: (AdmobAdEvent event, Map<String, dynamic> args) {
-              //           handleEvent(event, args, 'Banner');
-              //         },
-              //       ),
-              //     );
-              //   },
-              // ),
             ],
           ),
         ),
@@ -341,33 +313,11 @@ class _MyMaterialAppState extends State<MyMaterialApp> {
   }
 }
 
-/*
-Test Id's from:
-https://developers.google.com/admob/ios/banner
-https://developers.google.com/admob/android/banner
-
-App Id - See README where these Id's go
-Android: ca-app-pub-3940256099942544~3347511713
-iOS: ca-app-pub-3940256099942544~1458002511
-
-Banner
-Android: ca-app-pub-3940256099942544/6300978111
-iOS: ca-app-pub-3940256099942544/2934735716
-
-Interstitial
-Android: ca-app-pub-3940256099942544/1033173712
-iOS: ca-app-pub-3940256099942544/4411468910
-
-Reward Video
-Android: ca-app-pub-3940256099942544/5224354917
-iOS: ca-app-pub-3940256099942544/1712485313
-*/
-
 String getBannerAdUnitId() {
   if (Platform.isIOS) {
     return 'ca-app-pub-3940256099942544/2934735716';
   } else if (Platform.isAndroid) {
-    return 'ca-app-pub-3940256099942544/6300978111';
+    return 'ca-app-pub-5970556520110458/5687683637';
   }
   return null;
 }
@@ -376,7 +326,7 @@ String getInterstitialAdUnitId() {
   if (Platform.isIOS) {
     return 'ca-app-pub-3940256099942544/4411468910';
   } else if (Platform.isAndroid) {
-    return 'ca-app-pub-3940256099942544/1033173712';
+    return 'ca-app-pub-5970556520110458/6342289755';
   }
   return null;
 }
@@ -385,7 +335,7 @@ String getRewardBasedVideoAdUnitId() {
   if (Platform.isIOS) {
     return 'ca-app-pub-3940256099942544/1712485313';
   } else if (Platform.isAndroid) {
-    return 'ca-app-pub-3940256099942544/5224354917';
+    return 'ca-app-pub-5970556520110458/5783708940';
   }
   return null;
 }
