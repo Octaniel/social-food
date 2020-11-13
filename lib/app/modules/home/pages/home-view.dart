@@ -63,7 +63,7 @@ class HomeView extends GetView<HomeController> {
         builder: (_) {
           return !controller.searchBar
               ? TextWidget(
-                  text: 'FeedFood',
+                  text: 'FeedFood(BETA)',
                 )
               : searchBar();
         },
@@ -88,9 +88,9 @@ class HomeView extends GetView<HomeController> {
                 : Text('');
           },
         ),
-        IconButton(
-            icon: Icon(Icons.analytics_outlined),
-            onPressed: () => Get.toNamed(Routes.MYMATERIALAPP)),
+        // IconButton(
+        //     icon: Icon(Icons.analytics_outlined),
+        //     onPressed: () => Get.toNamed(Routes.MYMATERIALAPP)),
         IconButton(
             icon: Icon(Ionicons.ios_heart_empty),
             onPressed: () {

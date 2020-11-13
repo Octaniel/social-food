@@ -46,7 +46,9 @@ class SplashPage extends StatelessWidget {
               // ),
               CircularProgressIndicator(
                   backgroundColor: Colors.yellow,
-                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.red))
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.red)),
+              SizedBox(height: 10,),
+              Text("BETA"),
             ],
           ),
         ),
