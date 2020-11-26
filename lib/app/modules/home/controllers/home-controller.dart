@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 // import 'package:firebase_admob/firebase_admob.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_link_preview/flutter_link_preview.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ import 'package:socialfood/app/data/model/video.dart';
 import 'package:socialfood/app/data/repository/comentario_repository.dart';
 import 'package:socialfood/app/data/repository/gosto_repository.dart';
 import 'package:socialfood/app/data/repository/video_repository.dart';
+import 'package:socialfood/app/routes/app_routes.dart';
 import 'package:socialfood/app/widgets/cunstom_addmob.dart';
 import 'package:socialfood/app/widgets/loader-widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,6 +27,8 @@ class HomeController extends GetxController {
   final gostoRepository = GostoRepository();
   final texteditingController = TextEditingController();
   var scrollController = ScrollController();
+  InterstitialAd interstitialAd;
+
   // final cusntomAddmob = CunstomAddmob();
   int page = 0;
   RefreshController refreshController =
@@ -257,35 +261,40 @@ class HomeController extends GetxController {
     }
   }
 
+  void _loadInterstitialAd() {
+    interstitialAd.load();
+  }
+
+  void _onInterstitialAdEvent(MobileAdEvent event) {
+    switch (event) {
+      case MobileAdEvent.loaded:
+        // _isInterstitialAdReady = true;
+        break;
+      case MobileAdEvent.failedToLoad:
+        // _isInterstitialAdReady = false;
+        print('Failed to load an interstitial ad');
+        break;
+      case MobileAdEvent.closed:
+        Get.toNamed(Routes.HOME);
+        break;
+      default:
+      // do nothing
+    }
+  }
+
+
   @override
   void onInit() {
     super.onInit();
-    // showBnner();
-    // scrollController = ScrollController();
+    interstitialAd = InterstitialAd(
+      adUnitId: 'ca-app-pub-5970556520110458/6342289755',
+      listener: _onInterstitialAdEvent,
+    );
   }
-
-  // showBnner(){
-  //   cusntomAddmob.myBanner()
-  //   // typically this happens well before the ad is shown
-  //     ..load()
-  //     ..show(
-  //       // Positions the banner ad 60 pixels from the bottom of the screen
-  //       // anchorOffset: 60.0,
-  //       // Positions the banner ad 10 pixels from the center of the screen to the right
-  //       // horizontalCenterOffset: 10.0,
-  //       // Banner Position
-  //       anchorType: AnchorType.bottom,
-  //     );
-  // }
-
-
 
   @override
   void onClose() {
     page = 0;
-    // cusntomAddmob.myBanner()..load()..dispose();
-    // scrollController.dispose();
-    // scrollController = null;
     super.onClose();
   }
 }

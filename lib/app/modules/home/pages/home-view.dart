@@ -90,7 +90,9 @@ class HomeView extends GetView<HomeController> {
         ),
         IconButton(
             icon: Icon(Icons.analytics_outlined),
-            onPressed: () => Get.toNamed(Routes.MYMATERIALAPP)),
+            onPressed: () {
+              controller.interstitialAd.show();
+            }),
         IconButton(
             icon: Icon(Ionicons.ios_heart_empty),
             onPressed: () {

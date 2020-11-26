@@ -1,3 +1,4 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'app/routes/app_pages.dart';
@@ -12,6 +13,7 @@ import 'package:responsive_framework/utils/scroll_behavior.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FirebaseAdMob.instance.initialize(appId: "ca-app-pub-5970556520110458~2410288769");
   await GetStorage.init();
   Get.lazyPut<ThemeController>(() => ThemeController());
   ThemeController.to.getThemeMode();
