@@ -44,7 +44,7 @@ class HomeView extends GetView<HomeController> {
     return AppBar(
       elevation: 0,
       leading: GestureDetector(
-        onTap: ()=>Get.toNamed(Routes.PERFIL),
+        onTap: () => Get.toNamed(Routes.PERFIL),
         child: Container(
           margin: EdgeInsets.all(5),
           child: CircleAvatar(
@@ -88,9 +88,9 @@ class HomeView extends GetView<HomeController> {
                 : Text('');
           },
         ),
-        // IconButton(
-        //     icon: Icon(Icons.analytics_outlined),
-        //     onPressed: () => Get.toNamed(Routes.MYMATERIALAPP)),
+        IconButton(
+            icon: Icon(Icons.analytics_outlined),
+            onPressed: () => Get.toNamed(Routes.MYMATERIALAPP)),
         IconButton(
             icon: Icon(Ionicons.ios_heart_empty),
             onPressed: () {
@@ -100,7 +100,9 @@ class HomeView extends GetView<HomeController> {
             ? IconButton(
                 icon: Icon(Icons.video_call),
                 onPressed: () {
-                  GetPlatform.isWeb?Get.toNamed(Routes.ADDVIDEOWEB):Get.toNamed(Routes.INSERIRVIDEO);
+                  GetPlatform.isWeb||GetPlatform.isDesktop
+                      ? Get.toNamed(Routes.ADDVIDEOWEB)
+                      : Get.toNamed(Routes.INSERIRVIDEO);
                 })
             : Text(''),
       ],

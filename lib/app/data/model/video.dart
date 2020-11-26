@@ -38,6 +38,7 @@ class Video {
     dataPublicacao = DateTime.parse(json['dataCriacao']);
     listaDePessoasQueGostaram = (json['listaDePessoasQueGostaram'] as List==null?List():json['listaDePessoasQueGostaram'] as List).map((e) => Pessoa.fromJson(e)).toList();
     voceGostou = listaDePessoasQueGostaram.contains(Get.find<AppController>().usuario.pessoa);
+    itens = (json['itens'] as List==null?List():json['itens'] as List).map((e) => Item.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {

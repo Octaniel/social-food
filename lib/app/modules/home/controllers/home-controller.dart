@@ -15,6 +15,7 @@ import 'package:socialfood/app/data/repository/gosto_repository.dart';
 import 'package:socialfood/app/data/repository/video_repository.dart';
 import 'package:socialfood/app/widgets/cunstom_addmob.dart';
 import 'package:socialfood/app/widgets/loader-widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app_controller.dart';
 
@@ -245,6 +246,15 @@ class HomeController extends GetxController {
 
   Future<bool> atualizarDescricaoVideo(Video video) async {
     return await videoRepository.atlauizar(video);
+  }
+
+  launchURL(url) async {
+    // const url = 'https://flutter.dev';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override

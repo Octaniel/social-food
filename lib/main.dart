@@ -1,5 +1,3 @@
-
-import 'package:admob_flutter/admob_flutter.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'app/routes/app_pages.dart';
@@ -14,7 +12,6 @@ import 'package:responsive_framework/utils/scroll_behavior.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Admob.initialize();
   await GetStorage.init();
   Get.lazyPut<ThemeController>(() => ThemeController());
   ThemeController.to.getThemeMode();

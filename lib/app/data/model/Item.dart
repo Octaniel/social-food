@@ -8,11 +8,18 @@ class Item {
 
   Item({this.id, this.link, this.video, this.nome});
 
-  Item.fromJson(Map<String, dynamic> json) {
+  Item.fromJson1(Map<String, dynamic> json) {
     id = json['id'];
     nome = json['nome'];
     link = json['link'];
     video = Video.fromJson(json['video']);
+  }
+
+  Item.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    nome = json['nome'];
+    link = json['link'];
+    // video = Video.fromJson(json['video']);
   }
 
   Map<String, dynamic> toJson() {
