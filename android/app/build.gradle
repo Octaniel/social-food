@@ -84,5 +84,4 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementação 'com.google.android.gms: play-services-ads: 19.5 .0'
 }
