@@ -268,11 +268,14 @@ class HomeController extends GetxController {
   void _onInterstitialAdEvent(MobileAdEvent event) {
     switch (event) {
       case MobileAdEvent.loaded:
-        // _isInterstitialAdReady = true;
+        Get.defaultDialog(
+          content: Text('Carregado comsucesso: '+event.toString()),
+        );
         break;
       case MobileAdEvent.failedToLoad:
-        // _isInterstitialAdReady = false;
-        print('Failed to load an interstitial ad');
+        Get.defaultDialog(
+          content: Text('Falha ao apresentar o dialogo: '+event.toString()),
+        );
         break;
       case MobileAdEvent.closed:
         Get.toNamed(Routes.HOME);
@@ -286,8 +289,14 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+      keywords: <String>['flutterio', 'beautiful apps'],
+      contentUrl: 'https://flutter.io',
+      childDirected: false,
+    );
     interstitialAd = InterstitialAd(
       adUnitId: 'ca-app-pub-5970556520110458/6342289755',
+      targetingInfo: targetingInfo,
       listener: _onInterstitialAdEvent,
     );
     _loadInterstitialAd();
