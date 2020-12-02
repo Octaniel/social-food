@@ -239,7 +239,6 @@ class FeedView extends GetView<HomeController> {
     textEditingControler.text =
         video != null && video.descricao != null ? video.descricao : '';
     final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
-    print(video.itens);
     return total
         ? Scaffold(
             appBar: AppBar(

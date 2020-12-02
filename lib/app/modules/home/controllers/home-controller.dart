@@ -290,6 +290,7 @@ class HomeController extends GetxController {
       adUnitId: 'ca-app-pub-5970556520110458/6342289755',
       listener: _onInterstitialAdEvent,
     );
+    _loadInterstitialAd();
   }
 
   @override
