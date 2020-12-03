@@ -250,305 +250,331 @@ class FeedView extends GetView<HomeController> {
                 child: ListView(
                   children: [
                     wid,
-                    SizedBox(
-                      height: 3,
-                    ),
-                    Text(
-                      '${video.nome}',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 3,
-                    ),
-                    GetBuilder<HomeController>(
-                      builder: (_) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Ionicons.ios_heart,
-                                  color: !Get.isDarkMode
-                                      ? video.voceGostou
-                                          ? Colors.red
-                                          : Colors.black87
-                                      : video.voceGostou
-                                          ? Colors.black87
-                                          : Colors.white,
-                                ),
-                                onPressed: () {
-                                  controller.salvarGosto(video.id);
-                                }),
-                            IconButton(
-                                icon: Icon(Ionicons.ios_chatboxes),
-                                onPressed: () => Get.bottomSheet(BottomSheet(
-                                    onClosing: () => {controller.listarVideo()},
-                                    builder: (context) {
-                                      return ComentariosView(
-                                        videoId: video.id,
-                                      );
-                                    }))),
-                            SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        );
-                      },
-                      id: 'salverGosto',
-                    ),
-                    SizedBox(
-                      height: 3,
-                    ),
                     Container(
-                      margin: EdgeInsets.only(left: 7),
-                      child: Text(
-                          'Publicado em ${dateFormat.format(video.dataPublicacao)}'),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    GetBuilder<HomeController>(
-                      dispose: (s) {
-                        controller.descricao1 = '';
-                      },
-                      initState: (s) {
-                        controller.descricao = textEditingControler.text;
-                      },
-                      builder: (_) {
-                        return controller.descricao.isEmpty
-                            ? Text(
-                                'Sem descrição',
-                                textAlign: TextAlign.center,
-                              )
-                            : Text(
-                                '${controller.descricao}',
-                                style: TextStyle(fontSize: 16),
-                                textAlign: TextAlign.center,
-                              );
-                      },
-                      id: 'descricaoVideo',
-                    ),
-                    Get.find<AppController>().usuario.grupo == 'administrador'
-                        ? IconButton(
-                            tooltip: 'Editar descrição',
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              Get.defaultDialog(
-                                  title: 'Editar descrição',
-                                  content: TextField(
-                                    controller: textEditingControler,
-                                    maxLines: 3,
-                                    onChanged: (v) {
-                                      video.descricao = v;
-                                      controller.descricao = v;
-                                    },
-                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      hintText: 'Descrição',
-                                      // contentPadding: EdgeInsets.all(5)
-                                    ),
-                                  ),
-                                  onConfirm: () async {
-                                    if (await controller
-                                        .atualizarDescricaoVideo(video)) {
-                                      Get.rawSnackbar(
-                                          icon: Icon(FontAwesomeIcons.check),
-                                          duration: Duration(seconds: 2),
-                                          backgroundColor: Color(0xFF3CFEB5),
-                                          messageText: Text(
-                                            'Descrição editado com sucesso',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          borderRadius: 10,
-                                          margin: EdgeInsets.only(
-                                              left: 20, right: 20, bottom: 20));
-                                      Future.delayed(Duration(seconds: 2), () {
-                                        Navigator.pop(Get.context);
-                                      });
-                                    }
-                                  });
-                            },
-                          )
-                        : Text(''),
-                    !video.igredientes.isNullOrBlank
-                        ? Column(
-                            children: [
-                              Text(
-                                'Igredientes:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              Text(
-                                '${video.igredientes}',
-                                style: TextStyle(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          )
-                        : Text(''),
-                    !video.preparo.isNullOrBlank
-                        ? Column(
-                            children: [
-                              Text(
-                                'Preparo:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              Text(
-                                '${video.preparo}',
-                                style: TextStyle(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          )
-                        : Text(''),
-                    !video.canalLink.isNullOrBlank
-                        ? Column(
-                            children: [
-                              Text(
-                                'Link do canal:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  controller.launchURL(video.canalLink);
-                                },
-                                child: Text(
-                                  '${video.canalLink}',
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Text(''),
-                    !video.pageLink.isNullOrBlank
-                        ? Column(
-                            children: [
-                              Text(
-                                'Link da pagina:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  controller.launchURL(video.pageLink);
-                                },
-                                child: Text(
-                                  '${video.pageLink}',
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Text(''),
-                    video.itens.isEmpty
-                        ? Text('')
-                        : Column(
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                'Itens',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  // fontSize: 20
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                height: 3,
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border:
-                                        Border.all(color: Colors.redAccent)),
-                                child: Center(
-                                  child: Column(
-                                    children: video.itens
-                                        .map((e) => Column(
-                                              children: [
-                                                ListTile(
-                                                  leading: Container(
-                                                    child: Text(
-                                                      e.nome,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ),
-                                                  trailing: InkWell(
-                                                    onTap: () {
-                                                      controller
-                                                          .launchURL(e.link);
-                                                    },
-                                                    child: Container(
-                                                      padding: EdgeInsets.all(5),
-                                                      decoration: BoxDecoration(
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.grey
-                                                                .withOpacity(0.5),
-                                                            spreadRadius: 5,
-                                                            blurRadius: 7,
-                                                            offset: Offset(0,
-                                                                3), // changes position of shadow
-                                                          ),
-                                                        ],
-                                                        color: Colors.green,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
-                                                      ),
-                                                      child: Text("Comprar"),
-                                                    ),
-                                                  ),
-                                                ),
-                                                video.itens.indexOf(e) ==
-                                                        video.itens.length - 1
-                                                    ? Text("")
-                                                    : Divider(),
-                                              ],
-                                            ))
-                                        .toList(),
-                                  ),
-                                ),
-                              )
-                            ],
+                      height: Get.height*.6,
+                      child: ListView(
+                        children: [
+                          SizedBox(
+                            height: 3,
                           ),
-                    // Wrap(
-                    //   direction: Axis.horizontal,
-                    //   children: video.itens.map((e) => Container(
-                    //
-                    //   )).toList(),
-                    // ),
+                          Text(
+                            '${video.nome}',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          GetBuilder<HomeController>(
+                            builder: (_) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  IconButton(
+                                      icon: Icon(
+                                        Ionicons.ios_heart,
+                                        color: !Get.isDarkMode
+                                            ? video.voceGostou
+                                                ? Colors.red
+                                                : Colors.black87
+                                            : video.voceGostou
+                                                ? Colors.black87
+                                                : Colors.white,
+                                      ),
+                                      onPressed: () {
+                                        controller.salvarGosto(video.id);
+                                      }),
+                                  IconButton(
+                                      icon: Icon(Ionicons.ios_chatboxes),
+                                      onPressed: () => Get.bottomSheet(
+                                          BottomSheet(
+                                              onClosing: () =>
+                                                  {controller.listarVideo()},
+                                              builder: (context) {
+                                                return ComentariosView(
+                                                  videoId: video.id,
+                                                );
+                                              }))),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                ],
+                              );
+                            },
+                            id: 'salverGosto',
+                          ),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 7),
+                            child: Text(
+                                'Publicado em ${dateFormat.format(video.dataPublicacao)}'),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          GetBuilder<HomeController>(
+                            dispose: (s) {
+                              controller.descricao1 = '';
+                            },
+                            initState: (s) {
+                              controller.descricao = textEditingControler.text;
+                            },
+                            builder: (_) {
+                              return controller.descricao.isEmpty
+                                  ? Text(
+                                      'Sem descrição',
+                                      textAlign: TextAlign.center,
+                                    )
+                                  : Text(
+                                      '${controller.descricao}',
+                                      style: TextStyle(fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    );
+                            },
+                            id: 'descricaoVideo',
+                          ),
+                          Get.find<AppController>().usuario.grupo ==
+                                  'administrador'
+                              ? IconButton(
+                                  tooltip: 'Editar descrição',
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    Get.defaultDialog(
+                                        title: 'Editar descrição',
+                                        content: TextField(
+                                          controller: textEditingControler,
+                                          maxLines: 3,
+                                          onChanged: (v) {
+                                            video.descricao = v;
+                                            controller.descricao = v;
+                                          },
+                                          textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                            hintText: 'Descrição',
+                                            // contentPadding: EdgeInsets.all(5)
+                                          ),
+                                        ),
+                                        onConfirm: () async {
+                                          if (await controller
+                                              .atualizarDescricaoVideo(video)) {
+                                            Get.rawSnackbar(
+                                                icon:
+                                                    Icon(FontAwesomeIcons.check),
+                                                duration: Duration(seconds: 2),
+                                                backgroundColor:
+                                                    Color(0xFF3CFEB5),
+                                                messageText: Text(
+                                                  'Descrição editado com sucesso',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                borderRadius: 10,
+                                                margin: EdgeInsets.only(
+                                                    left: 20,
+                                                    right: 20,
+                                                    bottom: 20));
+                                            Future.delayed(Duration(seconds: 2),
+                                                () {
+                                              Navigator.pop(Get.context);
+                                            });
+                                          }
+                                        });
+                                  },
+                                )
+                              : Text(''),
+                          !video.igredientes.isNullOrBlank
+                              ? Column(
+                                  children: [
+                                    Text(
+                                      'Igredientes:',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      '${video.igredientes}',
+                                      style: TextStyle(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                )
+                              : Text(''),
+                          !video.preparo.isNullOrBlank
+                              ? Column(
+                                  children: [
+                                    Text(
+                                      'Preparo:',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      '${video.preparo}',
+                                      style: TextStyle(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                )
+                              : Text(''),
+                          !video.canalLink.isNullOrBlank
+                              ? Column(
+                                  children: [
+                                    Text(
+                                      'Link do canal:',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        controller.launchURL(video.canalLink);
+                                      },
+                                      child: Text(
+                                        '${video.canalLink}',
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Text(''),
+                          !video.pageLink.isNullOrBlank
+                              ? Column(
+                                  children: [
+                                    Text(
+                                      'Link da pagina:',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        controller.launchURL(video.pageLink);
+                                      },
+                                      child: Text(
+                                        '${video.pageLink}',
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Text(''),
+                          video.itens.isEmpty
+                              ? Text('')
+                              : Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'Itens',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        // fontSize: 20
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Container(
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(
+                                              color: Colors.redAccent)),
+                                      child: Center(
+                                        child: Column(
+                                          children: video.itens
+                                              .map((e) => Column(
+                                                    children: [
+                                                      ListTile(
+                                                        leading: Container(
+                                                          child: Text(
+                                                            e.nome,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          ),
+                                                        ),
+                                                        trailing: InkWell(
+                                                          onTap: () {
+                                                            controller.launchURL(
+                                                                e.link);
+                                                          },
+                                                          child: Container(
+                                                            padding:
+                                                                EdgeInsets.all(5),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              boxShadow: [
+                                                                BoxShadow(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .withOpacity(
+                                                                          0.5),
+                                                                  spreadRadius: 5,
+                                                                  blurRadius: 7,
+                                                                  offset: Offset(
+                                                                      0,
+                                                                      3), // changes position of shadow
+                                                                ),
+                                                              ],
+                                                              color: Colors.green,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            child:
+                                                                Text("Comprar"),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      video.itens.indexOf(e) ==
+                                                              video.itens.length -
+                                                                  1
+                                                          ? Text("")
+                                                          : Divider(),
+                                                    ],
+                                                  ))
+                                              .toList(),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                          // Wrap(
+                          //   direction: Axis.horizontal,
+                          //   children: video.itens.map((e) => Container(
+                          //
+                          //   )).toList(),
+                          // ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

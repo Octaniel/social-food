@@ -3,8 +3,11 @@ import 'dart:convert';
 // import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_link_preview/flutter_link_preview.dart';
 import 'package:get/get.dart';
+import 'package:mopub_flutter/mopub.dart';
+import 'package:mopub_flutter/mopub_interstitial.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:socialfood/app/data/model/Item.dart';
 import 'package:socialfood/app/data/model/comentario.dart';
@@ -28,6 +31,7 @@ class HomeController extends GetxController {
   final texteditingController = TextEditingController();
   var scrollController = ScrollController();
   InterstitialAd interstitialAd;
+  MoPubInterstitialAd interstitialAdM;
 
   // final cusntomAddmob = CunstomAddmob();
   int page = 0;
@@ -287,25 +291,42 @@ class HomeController extends GetxController {
 
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-      keywords: <String>['flutterio', 'beautiful apps'],
-      contentUrl: 'https://flutter.io',
-      childDirected: true,
-      nonPersonalizedAds: true,
-    );
-    interstitialAd = InterstitialAd(
-      adUnitId: 'ca-app-pub-5970556520110458/6342289755',
-      targetingInfo: targetingInfo,
-      listener: _onInterstitialAdEvent,
-    );
-    _loadInterstitialAd();
+    // MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    //   keywords: <String>['flutterio', 'beautiful apps'],
+    //   contentUrl: 'https://flutter.io',
+    //   childDirected: true,
+    //   nonPersonalizedAds: true,
+    // );
+    // interstitialAd = InterstitialAd(
+    //   adUnitId: 'ca-app-pub-5970556520110458/6342289755',
+    //   targetingInfo: targetingInfo,
+    //   listener: _onInterstitialAdEvent,
+    // );
+    // _loadInterstitialAd();
+
+    try {
+      MoPub.init('cbf22852919c4d14a1328d4c31480421', testMode: true).then((_) {
+        _loadInterstitialAd();
+      });
+    } on PlatformException {}
+    await interstitialAdM.load();
   }
 
   @override
   void onClose() {
     page = 0;
     super.onClose();
+  }
+
+  void _loadInterstitialAdM() {
+    interstitialAdM = MoPubInterstitialAd(
+      'cbf22852919c4d14a1328d4c31480421',
+          (result, args) {
+        print('Interstitial $result');
+      },
+      reloadOnClosed: true,
+    );
   }
 }

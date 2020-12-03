@@ -91,16 +91,7 @@ class HomeView extends GetView<HomeController> {
          IconButton(
              icon: Icon(Icons.analytics_outlined),
              onPressed: () async {
-               var bool = await controller.interstitialAd.show();
-               if(!bool){
-                 Get.defaultDialog(
-                   content: Text('Falha ao apresentar o dialogo:'),
-                 );
-               }else{
-                 Get.defaultDialog(
-                   content: Text('Carregado com Sucesso:'),
-                 );
-               }
+               await controller.interstitialAdM.show();
              }),
         IconButton(
             icon: Icon(Ionicons.ios_heart_empty),
