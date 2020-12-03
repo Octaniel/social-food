@@ -292,7 +292,8 @@ class HomeController extends GetxController {
     MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
       keywords: <String>['flutterio', 'beautiful apps'],
       contentUrl: 'https://flutter.io',
-      childDirected: false,
+      childDirected: true,
+      nonPersonalizedAds: true,
     );
     interstitialAd = InterstitialAd(
       adUnitId: 'ca-app-pub-5970556520110458/6342289755',
