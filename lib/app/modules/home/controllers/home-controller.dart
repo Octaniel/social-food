@@ -308,7 +308,7 @@ class HomeController extends GetxController {
 
     try {
       MoPub.init('cbf22852919c4d14a1328d4c31480421', testMode: true).then((_) {
-        _loadInterstitialAd();
+        _loadInterstitialAdM();
       });
     } on PlatformException {}
     await interstitialAdM.load();

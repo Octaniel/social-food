@@ -88,11 +88,11 @@ class HomeView extends GetView<HomeController> {
                 : Text('');
           },
         ),
-         IconButton(
-             icon: Icon(Icons.analytics_outlined),
-             onPressed: () async {
-               await controller.interstitialAdM.show();
-             }),
+         // IconButton(
+         //     icon: Icon(Icons.analytics_outlined),
+         //     onPressed: () async {
+         //       await controller.interstitialAdM.show();
+         //     }),
         IconButton(
             icon: Icon(Ionicons.ios_heart_empty),
             onPressed: () {

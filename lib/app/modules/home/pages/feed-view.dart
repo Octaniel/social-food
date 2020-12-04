@@ -227,7 +227,7 @@ class FeedView extends GetView<HomeController> {
                   children: [
                     wid,
                     Container(
-                      height: Get.height*.6,
+                      height: Get.height,
                       child: ListView(
                         children: [
                           SizedBox(
@@ -405,56 +405,6 @@ class FeedView extends GetView<HomeController> {
                                   ],
                                 )
                               : Text(''),
-                          !video.canalLink.isNullOrBlank
-                              ? Column(
-                                  children: [
-                                    Text(
-                                      'Link do canal:',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        controller.launchURL(video.canalLink);
-                                      },
-                                      child: Text(
-                                        '${video.canalLink}',
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Text(''),
-                          !video.pageLink.isNullOrBlank
-                              ? Column(
-                                  children: [
-                                    Text(
-                                      'Link da pagina:',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        controller.launchURL(video.pageLink);
-                                      },
-                                      child: Text(
-                                        '${video.pageLink}',
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Text(''),
                           video.itens.isEmpty
                               ? Text('')
                               : Column(
@@ -621,10 +571,8 @@ class FeedView extends GetView<HomeController> {
                   ),
                 ],
               ),
-              if (WebAnalyzer.isNotEmpty(webInfo.image)) ...[
                 const SizedBox(height: 2),
                 renderLinkPreview(video.url, false, null),
-              ]
             ],
           ),
         );
