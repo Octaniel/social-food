@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -104,29 +103,6 @@ class FeedView extends GetView<HomeController> {
                               SizedBox(
                                 height: 25,
                               ),
-                              // Visibility(
-                              //   visible: index % 2 != 0,
-                              //   replacement: Text(""),
-                              //   child: Container(
-                              //     margin: EdgeInsets.symmetric(horizontal: 10),
-                              //     height: 50,
-                              //     width: Get.width,
-                              //     decoration: BoxDecoration(
-                              //       color: controller.color,
-                              //       borderRadius: BorderRadius.circular(11),
-                              //     ),
-                              //     child: Center(
-                              //       child: Text(
-                              //         'Espaço para publicidade',
-                              //         style: TextStyle(
-                              //           fontFamily: 'Segoe UI',
-                              //           fontSize: 20,
-                              //           color: const Color(0xffffffff),
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           );
                         }),
@@ -171,65 +147,65 @@ class FeedView extends GetView<HomeController> {
                     : Html(
                         data: htmlDataVimeo,
                       )
-        : GetPlatform.isWeb
-            ? provider == 'youtube'
-                ? total
-                    ? EasyWebView(
-                        src: "https://www.youtube.com/embed/$videoID",
-                        onLoaded: () {},
-                        height: height,
-                        width: width,
-                        widgetsTextSelectable: true,
-                      )
-                    : Image.network(
-                        "https://img.youtube.com/vi/$videoID/0.jpg",
-                        fit: BoxFit.contain,
-                      )
-                : provider == 'facebook'
-                    ? total
-                        ? EasyWebView(
-                            src:
-                                "https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2F164841987800427%2Fvideos%2F$videoID%2F&show_text=0&width=$width",
-                            onLoaded: () {},
-                            height: height,
-                            width: width,
-                            widgetsTextSelectable: true,
-                          )
-                        : Image.asset(
-                            "images/facebook_thumb.jpg",
-                            fit: BoxFit.contain,
-                            height: height,
-                            width: width,
-                          )
-                    : provider == 'instagram'
-                        ? total
-                            ? EasyWebView(
-                                src: "http://instagram.com/p/$videoID/embed",
-                                onLoaded: () {},
-                                height: height,
-                                width: width,
-                                widgetsTextSelectable: true,
-                              )
-                            : Image.asset(
-                                "images/instagram_thumb.jpg",
-                                fit: BoxFit.contain,
-                                height: height,
-                                width: width,
-                              )
-                        : total
-                            ? EasyWebView(
-                                src: "https://player.vimeo.com/video/$videoID",
-                                onLoaded: () {},
-                                height: height,
-                                width: width,
-                                widgetsTextSelectable: true,
-                              )
-                            : Image.asset(
-                                "images/instagram_thumb.jpg",
-                                fit: BoxFit.contain,
-                                height: height,
-                                width: width,
-                              )
+        : GetPlatform.isWeb? Container()
+            // ? provider == 'youtube'
+            //     ? total
+            //         ? EasyWebView(
+            //             src: "https://www.youtube.com/embed/$videoID",
+            //             onLoaded: () {},
+            //             height: height,
+            //             width: width,
+            //             widgetsTextSelectable: true,
+            //           )
+            //         : Image.network(
+            //             "https://img.youtube.com/vi/$videoID/0.jpg",
+            //             fit: BoxFit.contain,
+            //           )
+            //     : provider == 'facebook'
+            //         ? total
+            //             ? EasyWebView(
+            //                 src:
+            //                     "https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2F164841987800427%2Fvideos%2F$videoID%2F&show_text=0&width=$width",
+            //                 onLoaded: () {},
+            //                 height: height,
+            //                 width: width,
+            //                 widgetsTextSelectable: true,
+            //               )
+            //             : Image.asset(
+            //                 "images/facebook_thumb.jpg",
+            //                 fit: BoxFit.contain,
+            //                 height: height,
+            //                 width: width,
+            //               )
+            //         : provider == 'instagram'
+            //             ? total
+            //                 ? EasyWebView(
+            //                     src: "http://instagram.com/p/$videoID/embed",
+            //                     onLoaded: () {},
+            //                     height: height,
+            //                     width: width,
+            //                     widgetsTextSelectable: true,
+            //                   )
+            //                 : Image.asset(
+            //                     "images/instagram_thumb.jpg",
+            //                     fit: BoxFit.contain,
+            //                     height: height,
+            //                     width: width,
+            //                   )
+            //             : total
+            //                 ? EasyWebView(
+            //                     src: "https://player.vimeo.com/video/$videoID",
+            //                     onLoaded: () {},
+            //                     height: height,
+            //                     width: width,
+            //                     widgetsTextSelectable: true,
+            //                   )
+            //                 : Image.asset(
+            //                     "images/instagram_thumb.jpg",
+            //                     fit: BoxFit.contain,
+            //                     height: height,
+            //                     width: width,
+            //                   )
             : Container(
                 width: width,
                 height: height,
