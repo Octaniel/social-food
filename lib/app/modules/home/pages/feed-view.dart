@@ -227,7 +227,7 @@ class FeedView extends GetView<HomeController> {
                   children: [
                     wid,
                     Container(
-                      height: Get.height,
+                      height: Get.height*.60,
                       child: ListView(
                         children: [
                           SizedBox(
