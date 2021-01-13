@@ -8,9 +8,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:socialfood/app/data/model/video.dart';
 import 'package:socialfood/app/modules/favoritos/controllers/favorito_controller.dart';
-import 'package:socialfood/app/modules/favoritos/widgets/comentarios_widget.dart';
-import 'package:socialfood/app/modules/home/controllers/home-controller.dart';
-import 'package:socialfood/app/modules/home/pages/comentarios-view.dart';
 import 'package:socialfood/app/res/util.dart';
 import 'package:socialfood/app/routes/app_routes.dart';
 import 'package:socialfood/app/widgets/custom_drawer.dart';
@@ -205,16 +202,17 @@ class FavoritoPage extends GetView<FavoritoController> {
                                 onPressed: () {
                                   controller.salvarGosto(video.id);
                                 }),
-                            IconButton(
-                                icon: Icon(Ionicons.ios_chatboxes),
-                                onPressed: () => Get.bottomSheet(BottomSheet(
-                                    onClosing: () =>
-                                        {controller.listarVideoQueGostei('')},
-                                    builder: (context) {
-                                      return ComentariosView(
-                                        videoId: video.id,
-                                      );
-                                    }))),
+                            // TODO: implementar na web app
+                            //  IconButton(
+                            //     icon: Icon(Ionicons.ios_chatboxes),
+                            //     onPressed: () => Get.bottomSheet(BottomSheet(
+                            //         onClosing: () =>
+                            //             {controller.listarVideoQueGostei('')},
+                            //         builder: (context) {
+                            //           return ComentariosView(
+                            //             videoId: video.id,
+                            //           );
+                            //         }))),
                             SizedBox(
                               width: 10,
                             ),

@@ -1,7 +1,7 @@
 import 'package:socialfood/app/data/model/video.dart';
 import 'package:socialfood/app/data/provider/video_provider.dart';
 
-class VideoRepository{
+class VideoRepository {
   final videoProvider = VideoProvider();
 
   Future<List<Video>> listar(int page, String nome) async {
@@ -12,11 +12,15 @@ class VideoRepository{
     return await videoProvider.listarQueGostei(page, nome);
   }
 
-  Future<bool> salvar(Video video)async{
+  Future<bool> salvar(Video video) async {
     return await videoProvider.salvar(video);
   }
 
-  Future<bool> atlauizar(Video video)async{
+  Future<bool> atlauizar(Video video) async {
     return await videoProvider.atlauizar(video);
+  }
+
+  Future<int> totalVideo() async {
+    return await videoProvider.totalVideo();
   }
 }

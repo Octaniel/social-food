@@ -11,11 +11,11 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:socialfood/app/app_controller.dart';
 import 'package:socialfood/app/data/model/video.dart';
 import 'package:socialfood/app/modules/home/controllers/home-controller.dart';
+import 'package:socialfood/app/modules/home/widgets/render-app-bar.dart';
 import 'package:socialfood/app/res/util.dart';
+import 'package:socialfood/app/routes/app_routes.dart';
 import 'package:socialfood/app/widgets/loader-widget.dart';
 import 'package:socialfood/app/widgets/text-widget.dart';
-
-import 'comentarios-view.dart';
 
 class FeedView extends GetView<HomeController> {
   @override
@@ -23,49 +23,51 @@ class FeedView extends GetView<HomeController> {
     controller.listarVideo();
     return GetBuilder<HomeController>(
       builder: (_) {
-        return Visibility(
-            visible: !controller.carregando,
-            replacement: LoaderWidget(),
-            child: controller.videosFiltrado.isEmpty
-                ? Center(
-                    child: TextWidget(
-                      text: controller.texteditingController.text.isEmpty
-                          ? 'Nenhum vídeo cadastrado no momento'
-                          : 'Nenhum vídeo relaoicnado com a sua pesquisa no momento',
-                    ),
-                  )
-                : SmartRefresher(
-                    enablePullDown: true,
-                    enablePullUp: true,
-                    onRefresh: () {
-                      controller.listarVideo(refresh: false);
-                    },
-                    onLoading: () {
-                      controller.listarVideo(refresh: true);
-                    },
-                    controller: controller.refreshController,
-                    footer: CustomFooter(
-                      builder: (BuildContext context, LoadStatus mode) {
-                        Widget body;
-                        if (mode == LoadStatus.idle) {
-                          body = Text("Carregando");
-                        } else if (mode == LoadStatus.loading) {
-                          body = CircularProgressIndicator();
-                        } else if (mode == LoadStatus.canLoading) {
-                          body = CircularProgressIndicator(
-                              backgroundColor: Colors.cyanAccent,
-                              valueColor: new AlwaysStoppedAnimation<Color>(
-                                  Colors.red));
-                        } else {
-                          body = Text("Sem mais vídeos");
-                        }
-                        return Container(
-                          height: 55.0,
-                          child: Center(child: body),
-                        );
+        return Scaffold(
+          appBar: renderAppBar(false),
+          body: Visibility(
+              visible: !controller.carregando,
+              replacement: LoaderWidget(),
+              child: controller.videosFiltrado.isEmpty
+                  ? Center(
+                      child: TextWidget(
+                        text: controller.texteditingController.text.isEmpty
+                            ? 'Nenhum vídeo cadastrado no momento'
+                            : 'Nenhum vídeo relaoicnado com a sua pesquisa no momento',
+                      ),
+                    )
+                  : SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: true,
+                      onRefresh: () {
+                        controller.listarVideo(refresh: false);
                       },
-                    ),
-                    child: ListView.builder(
+                      onLoading: () {
+                        controller.listarVideo(refresh: true);
+                      },
+                      controller: controller.refreshController,
+                      footer: CustomFooter(
+                        builder: (BuildContext context, LoadStatus mode) {
+                          Widget body;
+                          if (mode == LoadStatus.idle) {
+                            body = Text("Carregando");
+                          } else if (mode == LoadStatus.loading) {
+                            body = CircularProgressIndicator();
+                          } else if (mode == LoadStatus.canLoading) {
+                            body = CircularProgressIndicator(
+                                backgroundColor: Colors.cyanAccent,
+                                valueColor: new AlwaysStoppedAnimation<Color>(
+                                    Colors.red));
+                          } else {
+                            body = Text("Sem mais vídeos");
+                          }
+                          return Container(
+                            height: 55.0,
+                            child: Center(child: body),
+                          );
+                        },
+                      ),
+                      child: GridView.builder(
                         // controller: controller.scrollController,
                         itemCount: controller.videosFiltrado.length,
                         itemBuilder: (context, index) {
@@ -99,6 +101,27 @@ class FeedView extends GetView<HomeController> {
                                             },
                                             child: renderLinkPreview1(video),
                                           ),
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                  tooltip: "Dashboard",
+                                                  icon: Icon(FontAwesomeIcons
+                                                      .chartLine),
+                                                  onPressed: () {
+                                                    Get.toNamed(Routes.HOME);
+                                                  }),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              IconButton(
+                                                  tooltip: "Dashboard",
+                                                  icon: Icon(FontAwesomeIcons
+                                                      .chartLine),
+                                                  onPressed: () {
+                                                    Get.toNamed(Routes.HOME);
+                                                  }),
+                                            ],
+                                          ),
                                         ],
                                       ))),
                               SizedBox(
@@ -106,8 +129,12 @@ class FeedView extends GetView<HomeController> {
                               ),
                             ],
                           );
-                        }),
-                  ));
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                      ),
+                    )),
+        );
       },
       id: 'videosFiltrado',
     );
@@ -228,7 +255,7 @@ class FeedView extends GetView<HomeController> {
                   children: [
                     wid,
                     Container(
-                      height: Get.height*.6,
+                      height: Get.height * .6,
                       child: ListView(
                         children: [
                           SizedBox(
@@ -248,7 +275,8 @@ class FeedView extends GetView<HomeController> {
                           GetBuilder<HomeController>(
                             builder: (_) {
                               return Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
                                     width: 10,
@@ -267,17 +295,17 @@ class FeedView extends GetView<HomeController> {
                                       onPressed: () {
                                         controller.salvarGosto(video.id);
                                       }),
-                                  IconButton(
-                                      icon: Icon(Ionicons.ios_chatboxes),
-                                      onPressed: () => Get.bottomSheet(
-                                          BottomSheet(
-                                              onClosing: () =>
-                                                  {controller.listarVideo()},
-                                              builder: (context) {
-                                                return ComentariosView(
-                                                  videoId: video.id,
-                                                );
-                                              }))),
+                                  // IconButton(
+                                  //     icon: Icon(Ionicons.ios_chatboxes),
+                                  //     onPressed: () => Get.bottomSheet(
+                                  //         BottomSheet(
+                                  //             onClosing: () =>
+                                  //                 {controller.listarVideo()},
+                                  //             builder: (context) {
+                                  //               return ComentariosView(
+                                  //                 videoId: video.id,
+                                  //               );
+                                  //             }))),
                                   SizedBox(
                                     width: 10,
                                   ),
@@ -343,8 +371,8 @@ class FeedView extends GetView<HomeController> {
                                           if (await controller
                                               .atualizarDescricaoVideo(video)) {
                                             Get.rawSnackbar(
-                                                icon:
-                                                    Icon(FontAwesomeIcons.check),
+                                                icon: Icon(
+                                                    FontAwesomeIcons.check),
                                                 duration: Duration(seconds: 2),
                                                 backgroundColor:
                                                     Color(0xFF3CFEB5),
@@ -478,7 +506,8 @@ class FeedView extends GetView<HomeController> {
                                       margin:
                                           EdgeInsets.symmetric(horizontal: 10),
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           border: Border.all(
                                               color: Colors.redAccent)),
                                       child: Center(
@@ -498,12 +527,14 @@ class FeedView extends GetView<HomeController> {
                                                         ),
                                                         trailing: InkWell(
                                                           onTap: () {
-                                                            controller.launchURL(
-                                                                e.link);
+                                                            controller
+                                                                .launchURL(
+                                                                    e.link);
                                                           },
                                                           child: Container(
                                                             padding:
-                                                                EdgeInsets.all(5),
+                                                                EdgeInsets.all(
+                                                                    5),
                                                             decoration:
                                                                 BoxDecoration(
                                                               boxShadow: [
@@ -512,14 +543,16 @@ class FeedView extends GetView<HomeController> {
                                                                       .grey
                                                                       .withOpacity(
                                                                           0.5),
-                                                                  spreadRadius: 5,
+                                                                  spreadRadius:
+                                                                      5,
                                                                   blurRadius: 7,
                                                                   offset: Offset(
                                                                       0,
                                                                       3), // changes position of shadow
                                                                 ),
                                                               ],
-                                                              color: Colors.green,
+                                                              color:
+                                                                  Colors.green,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -531,7 +564,8 @@ class FeedView extends GetView<HomeController> {
                                                         ),
                                                       ),
                                                       video.itens.indexOf(e) ==
-                                                              video.itens.length -
+                                                              video.itens
+                                                                      .length -
                                                                   1
                                                           ? Text("")
                                                           : Divider(),
@@ -622,8 +656,8 @@ class FeedView extends GetView<HomeController> {
                   ),
                 ],
               ),
-                const SizedBox(height: 2),
-                renderLinkPreview(video.url, false, null),
+              const SizedBox(height: 2),
+              renderLinkPreview(video.url, false, null),
             ],
           ),
         );

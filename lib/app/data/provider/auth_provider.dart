@@ -39,7 +39,44 @@ class AuthProvider {
     return null;
   }
 
+  Future<List<Map<String, Object>>> listarUsuarioDtoParaGrafico() async {
+    var response = await FaturaHttp().get(
+        '${url}usuario/listarUsuarioDtoParaGrafico',
+        headers: <String, String>{"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      var listUsuarioModel = jsonResponse.map<Map<String, Object>>((map) {
+        return {'quntidade': map['quntidade'], 'mes': map['mes']};
+      }).toList();
+      return listUsuarioModel;
+    } else {
+      print('erro -get');
+    }
+    return null;
+  }
 
+  Future<int> getCount() async {
+    var response = await FaturaHttp().get('${url}usuario/quntidadeUsuario',
+        headers: <String, String>{"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      return int.parse(response.body);
+    } else {
+      print('erro -get');
+    }
+    return null;
+  }
+
+  Future<int> getCountUltimo30Dias() async {
+    var response = await FaturaHttp().get(
+        '${url}usuario/quntidadeUsuarioUltimo30Dias',
+        headers: <String, String>{"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      return int.parse(response.body);
+    } else {
+      print('erro -get');
+    }
+    return null;
+  }
 
   Future<bool> login(String senha, String email) async {
     String login = "username=$email&password=$senha&grant_type=password";
@@ -72,12 +109,12 @@ class AuthProvider {
       list.insert(0, true);
       list.insert(1, 'Registrado(a) com sucesso');
       return list;
-    } else if(response.statusCode == 409) {
+    } else if (response.statusCode == 409) {
       var list = List();
       list.insert(0, false);
       list.insert(1, 'Este E-mail já esta sendo utilizado por outra pessoa');
       return list;
-    }else{
+    } else {
       var list = List();
       list.insert(0, false);
       list.insert(1, 'Erro ao registrar');

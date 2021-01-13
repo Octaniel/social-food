@@ -40,4 +40,16 @@ class AuthRepository {
   Future<bool> delete(id) async {
     return await authProvider.delete(id);
   }
+
+  Future<int> getCount() async {
+    return await authProvider.getCount();
+  }
+
+  Future<int> getCountUltimo30Dias() async {
+    return await authProvider.getCountUltimo30Dias();
+  }
+
+  Future<List<Map<String, Object>>> listarUsuarioDtoParaGrafico() async {
+    return await authProvider.listarUsuarioDtoParaGrafico();
+  }
 }

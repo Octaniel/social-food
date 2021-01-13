@@ -1,6 +1,6 @@
 {
-    "name": "socialfood",
-    "short_name": "socialfood",
+    "name": "social_food",
+    "short_name": "social_food",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

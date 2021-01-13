@@ -10,4 +10,5 @@ abstract class Routes {
   static const INSERIRVIDEO = '/inserirVideo';
   static const ADDVIDEOWEB = '/addvideoweb';
   static const MYMATERIALAPP = '/myMaterialApp';
+  static const FEED = '/feed';
 }

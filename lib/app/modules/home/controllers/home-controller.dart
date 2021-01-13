@@ -1,25 +1,16 @@
-import 'dart:convert';
-
-// import 'package:firebase_admob/firebase_admob.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_link_preview/flutter_link_preview.dart';
 import 'package:get/get.dart';
-import 'package:mopub_flutter/mopub.dart';
-import 'package:mopub_flutter/mopub_interstitial.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:socialfood/app/data/model/Item.dart';
 import 'package:socialfood/app/data/model/comentario.dart';
 import 'package:socialfood/app/data/model/gosto.dart';
 import 'package:socialfood/app/data/model/pessoa.dart';
 import 'package:socialfood/app/data/model/video.dart';
+import 'package:socialfood/app/data/repository/auth_repository.dart';
 import 'package:socialfood/app/data/repository/comentario_repository.dart';
 import 'package:socialfood/app/data/repository/gosto_repository.dart';
 import 'package:socialfood/app/data/repository/video_repository.dart';
-import 'package:socialfood/app/routes/app_routes.dart';
-import 'package:socialfood/app/widgets/cunstom_addmob.dart';
-import 'package:socialfood/app/widgets/loader-widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app_controller.dart';
@@ -30,8 +21,7 @@ class HomeController extends GetxController {
   final gostoRepository = GostoRepository();
   final texteditingController = TextEditingController();
   var scrollController = ScrollController();
-  InterstitialAd interstitialAd;
-  MoPubInterstitialAd interstitialAdM;
+  final authRepository = AuthRepository();
 
   // final cusntomAddmob = CunstomAddmob();
   int page = 0;
@@ -45,16 +35,51 @@ class HomeController extends GetxController {
 
   final _carregando = false.obs;
   final _carregandoRefresh = false.obs;
-  final _videos = List<Video>().obs;
-  final _videosFiltrado = List<Video>().obs;
-  final _comentarios = List<Comentario>().obs;
+  final _videos = <Video>[].obs;
+  final _videosFiltrado = <Video>[].obs;
+  final _comentarios = <Comentario>[].obs;
+  final _usuariosResumo = <Map<String, Object>>[].obs;
   final _comentario = Comentario().obs;
   final _video = Video().obs;
   final _permitirComentarios = false.obs;
   final _color = Colors.red.obs;
   final _descricao = ''.obs;
-  final _itens = List<Item>().obs;
+  final _itens = <Item>[].obs;
   final _searchBar = false.obs;
+  final _totalVideo = 0.obs;
+  final _totalUsuario = 0.obs;
+  final _totalUsuarioUltimo30Dias = 0.obs;
+  final _rf1 = 0.obs;
+
+  get rf1 => _rf1.value;
+
+  set rf1(value) {
+    _rf1.value = value;
+  }
+
+  List<Map<String, Object>> get usuariosResumo => _usuariosResumo.value;
+
+  set usuariosResumo(value) {
+    _usuariosResumo.value = value;
+  }
+
+  get totalUsuarioUltimo30Dias => _totalUsuarioUltimo30Dias.value;
+
+  set totalUsuarioUltimo30Dias(value) {
+    _totalUsuarioUltimo30Dias.value = value;
+  }
+
+  get totalVideo => _totalVideo.value;
+
+  set totalVideo(value) {
+    _totalVideo.value = value;
+  }
+
+  get totalUsuario => _totalUsuario.value;
+
+  set totalUsuario(value) {
+    _totalUsuario.value = value;
+  }
 
   bool get carregandoRefresh => _carregandoRefresh.value;
 
@@ -162,7 +187,6 @@ class HomeController extends GetxController {
         refreshController.loadNoData();
       } else {
         refreshController.loadComplete();
-
       }
       update();
     } else {
@@ -210,7 +234,7 @@ class HomeController extends GetxController {
 
   Future<bool> inserirVideo() async {
     video.itens = itens;
-    if(GetPlatform.isAndroid||GetPlatform.isIOS){
+    if (GetPlatform.isAndroid || GetPlatform.isIOS) {
       WebInfo info = await WebAnalyzer.getInfo(video.url);
       video.nome = info.title;
     }
@@ -256,6 +280,23 @@ class HomeController extends GetxController {
     return await videoRepository.atlauizar(video);
   }
 
+  Future<void> totalUsuarios() async {
+    totalUsuario = await authRepository.getCount();
+  }
+
+  Future<void> totalUsuariosUltimo30Dias() async {
+    totalUsuarioUltimo30Dias = await authRepository.getCountUltimo30Dias();
+  }
+
+  Future<void> totalVideos() async {
+    totalVideo = await videoRepository.totalVideo();
+  }
+
+  Future<void> listarUsuarioDtoParaGrafico() async {
+    usuariosResumo = await authRepository.listarUsuarioDtoParaGrafico();
+    rf1 = rf1 + 1;
+  }
+
   launchURL(url) async {
     // const url = 'https://flutter.dev';
     if (await canLaunch(url)) {
@@ -265,68 +306,19 @@ class HomeController extends GetxController {
     }
   }
 
-  void _loadInterstitialAd() {
-    interstitialAd.load();
-  }
-
-  void _onInterstitialAdEvent(MobileAdEvent event) {
-    switch (event) {
-      case MobileAdEvent.loaded:
-        Get.defaultDialog(
-          content: Text('Carregado comsucesso: '+event.toString()),
-        );
-        break;
-      case MobileAdEvent.failedToLoad:
-        Get.defaultDialog(
-          content: Text('Falha ao apresentar o dialogo: '+event.toString()),
-        );
-        break;
-      case MobileAdEvent.closed:
-        Get.toNamed(Routes.HOME);
-        break;
-      default:
-      // do nothing
-    }
-  }
-
-
   @override
   Future<void> onInit() async {
     super.onInit();
-    // MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    //   keywords: <String>['flutterio', 'beautiful apps'],
-    //   contentUrl: 'https://flutter.io',
-    //   childDirected: true,
-    //   nonPersonalizedAds: true,
-    // );
-    // interstitialAd = InterstitialAd(
-    //   adUnitId: 'ca-app-pub-5970556520110458/6342289755',
-    //   targetingInfo: targetingInfo,
-    //   listener: _onInterstitialAdEvent,
-    // );
-    // _loadInterstitialAd();
-
-    try {
-      MoPub.init('cbf22852919c4d14a1328d4c31480421', testMode: true).then((_) {
-        _loadInterstitialAdM();
-      });
-    } on PlatformException {}
-    await interstitialAdM.load();
+    await totalVideos();
+    await totalUsuarios();
+    await totalUsuariosUltimo30Dias();
+    await listarUsuarioDtoParaGrafico();
+    update();
   }
 
   @override
   void onClose() {
     page = 0;
     super.onClose();
-  }
-
-  void _loadInterstitialAdM() {
-    interstitialAdM = MoPubInterstitialAd(
-      'cbf22852919c4d14a1328d4c31480421',
-          (result, args) {
-        print('Interstitial $result');
-      },
-      reloadOnClosed: true,
-    );
   }
 }
