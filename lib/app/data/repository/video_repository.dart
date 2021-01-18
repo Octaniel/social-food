@@ -23,4 +23,8 @@ class VideoRepository {
   Future<int> totalVideo() async {
     return await videoProvider.totalVideo();
   }
+
+  Future<bool> remover(int id) async {
+    return await videoProvider.remover(id);
+  }
 }

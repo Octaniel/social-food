@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class TextFormFieldWidget extends StatelessWidget {
   final label;
   final Function(String) onChanged;
+  final Function(String) onFieldSubmitted;
   final bool isObscure;
   final Icon icon;
   final TextInputType inputType;
@@ -12,6 +13,7 @@ class TextFormFieldWidget extends StatelessWidget {
   const TextFormFieldWidget(
       {this.label,
       this.onChanged,
+      this.onFieldSubmitted,
       this.isObscure,
       this.icon,
       this.inputType,
@@ -24,6 +26,7 @@ class TextFormFieldWidget extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.grey[100]))),
       child: TextFormField(
+        onFieldSubmitted: onFieldSubmitted,
         onChanged: onChanged,
         obscureText: isObscure,
         keyboardType: inputType,

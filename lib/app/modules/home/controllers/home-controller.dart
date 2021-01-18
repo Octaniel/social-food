@@ -292,6 +292,10 @@ class HomeController extends GetxController {
     totalVideo = await videoRepository.totalVideo();
   }
 
+  Future<bool> remover(int id) async {
+    return await videoRepository.remover(id);
+  }
+
   Future<void> listarUsuarioDtoParaGrafico() async {
     usuariosResumo = await authRepository.listarUsuarioDtoParaGrafico();
     rf1 = rf1 + 1;

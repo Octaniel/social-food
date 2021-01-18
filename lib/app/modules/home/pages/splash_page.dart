@@ -14,9 +14,7 @@ class SplashPage extends StatelessWidget {
       if (await AuthProvider().verificarERenovarToken()) {
         await Get.find<AppController>().refreshUsuario();
         // Get.offNamed(Routes.HOME);
-        GetPlatform.isWeb
-            ? Get.offNamed(Routes.ADDVIDEOWEB)
-            : Get.offNamed(Routes.HOME);
+        Get.offNamed(Routes.HOME);
       } else {
         Get.offNamed(Routes.LOGIN);
       }

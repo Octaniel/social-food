@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:socialfood/app/app_controller.dart';
 import 'package:socialfood/app/data/model/Item.dart';
 import 'package:socialfood/app/data/model/video.dart';
 import 'package:socialfood/app/modules/home/controllers/home-controller.dart';
 import 'package:socialfood/app/routes/app_routes.dart';
 import 'package:socialfood/app/widgets/text-widget.dart';
+
+import '../../../app_controller.dart';
 
 class AddVideoWebPage extends GetView<HomeController> {
   final _ttxeEditingcontroller1 = TextEditingController();
@@ -20,6 +20,16 @@ class AddVideoWebPage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    Video video = Get.arguments;
+    if (video != null) {
+      _ttxeEditingcontroller1.text = video.url;
+      _ttxeEditingcontroller2.text = video.descricao;
+      _ttxeEditingcontroller3.text = video.igredientes;
+      _ttxeEditingcontroller4.text = video.preparo;
+      _ttxeEditingcontroller5.text = video.canalLink;
+      _ttxeEditingcontroller6.text = video.pageLink;
+      _ttxeEditingcontroller7.text = video.nome;
+    }
     return Scaffold(
       appBar: AppBar(
         title: CircleAvatar(
@@ -48,9 +58,10 @@ class AddVideoWebPage extends GetView<HomeController> {
               return ListView(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                        width: Get.width * .5 - 12,
+                        width: Get.width * .42 - 12,
                         child: TextField(
                           controller: _ttxeEditingcontroller7,
                           onChanged: (v) {
@@ -62,11 +73,8 @@ class AddVideoWebPage extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 5,
-                      ),
                       Container(
-                        width: Get.width * .5 - 12,
+                        width: Get.width * .42 - 12,
                         child: TextField(
                           controller: _ttxeEditingcontroller1,
                           onChanged: (v) {
@@ -80,13 +88,6 @@ class AddVideoWebPage extends GetView<HomeController> {
                       ),
                     ],
                   ),
-                  // TextFormField(
-                  //   controller: _ttxeEditingcontroller1,
-                  //   onChanged: (v) => controller.video.url = v,
-                  //   decoration: InputDecoration(
-                  //       labelStyle: GoogleFonts.muli(),
-                  //       labelText: 'Url do vídeo'),
-                  // ),
                   SizedBox(
                     height: 20,
                   ),
@@ -133,9 +134,10 @@ class AddVideoWebPage extends GetView<HomeController> {
                     ),
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                        width: Get.width * .5 - 12,
+                        width: Get.width * .42 - 12,
                         child: TextField(
                           controller: _ttxeEditingcontroller5,
                           onChanged: (v) {
@@ -147,11 +149,8 @@ class AddVideoWebPage extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 5,
-                      ),
                       Container(
-                        width: Get.width * .5 - 12,
+                        width: Get.width * .42 - 12,
                         child: TextField(
                           controller: _ttxeEditingcontroller6,
                           onChanged: (v) {
@@ -169,74 +168,76 @@ class AddVideoWebPage extends GetView<HomeController> {
                     builder: (_) {
                       return Wrap(
                         direction: Axis.horizontal,
-                        children: controller.itens
-                            .map((e) => Container(
-                                  width: Get.width * .25 - 32,
-                                  child: Stack(
-                                    children: [
-                                      Card(
-                                        elevation: 3,
-                                        child: Container(
-                                          margin: EdgeInsets.all(5),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                  'Item(${controller.itens.indexOf(e) + 1})'),
-                                              Container(
-                                                width: Get.width * .20 - 12,
-                                                child: TextField(
-                                                  onChanged: (v) {
-                                                    e.nome = v;
-                                                  },
-                                                  decoration: InputDecoration(
-                                                    hintText: 'Nome',
-                                                    // contentPadding: EdgeInsets.all(5)
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: Get.width * .20 - 12,
-                                                child: TextField(
-                                                  onChanged: (v) {
-                                                    e.link = v;
-                                                  },
-                                                  decoration: InputDecoration(
-                                                    hintText: 'Link',
-                                                    // contentPadding: EdgeInsets.all(5)
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      // SizedBox(
-                                      //   width: 5,
-                                      // ),
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: Container(
-                                          margin: EdgeInsets.only(right: 20),
-                                          height: 30,
-                                          width: 30,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50)),
-                                          child: InkWell(
-                                            onTap: () =>
-                                                controller.removerItem(e),
-                                            child: Icon(
-                                              FontAwesomeIcons.times,
-                                              color: Colors.grey[900],
-                                              size: 14,
+                        alignment: WrapAlignment.center,
+                        children: controller.itens.map((e) {
+                          return Container(
+                            width: Get.width * .25 - 32,
+                            child: Stack(
+                              children: [
+                                Card(
+                                  elevation: 3,
+                                  child: Container(
+                                    margin: EdgeInsets.all(5),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                            'Item(${controller.itens.indexOf(e) + 1})'),
+                                        Container(
+                                          width: Get.width * .20 - 12,
+                                          child: TextFormField(
+                                            initialValue: e.nome,
+                                            onChanged: (v) {
+                                              e.nome = v;
+                                            },
+                                            decoration: InputDecoration(
+                                              hintText: 'Nome',
+                                              // contentPadding: EdgeInsets.all(5)
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        Container(
+                                          width: Get.width * .20 - 12,
+                                          child: TextFormField(
+                                            initialValue: e.link,
+                                            onChanged: (v) {
+                                              e.link = v;
+                                            },
+                                            decoration: InputDecoration(
+                                              hintText: 'Link',
+                                              // contentPadding: EdgeInsets.all(5)
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ))
-                            .toList(),
+                                ),
+                                // SizedBox(
+                                //   width: 5,
+                                // ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                    margin: EdgeInsets.only(right: 20),
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    child: InkWell(
+                                      onTap: () => controller.removerItem(e),
+                                      child: Icon(
+                                        FontAwesomeIcons.times,
+                                        color: Colors.grey[900],
+                                        size: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
                       );
                     },
                     id: 'addItem',
@@ -245,7 +246,7 @@ class AddVideoWebPage extends GetView<HomeController> {
                     height: 5,
                   ),
                   Container(
-                    margin: EdgeInsets.only(right: Get.width * .8),
+                    margin: EdgeInsets.only(right: Get.width * .78),
                     height: 40,
                     child: RaisedButton(
                         color: Colors.red,
@@ -295,7 +296,7 @@ class AddVideoWebPage extends GetView<HomeController> {
             duration: Duration(seconds: 2),
             backgroundColor: Color(0xFF3CFEB5),
             messageText: Text(
-              'Adiciodano com sucesso',
+              '${controller.video.id != null ? 'Atualizado' : 'Adicionado'} com sucesso',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -312,7 +313,7 @@ class AddVideoWebPage extends GetView<HomeController> {
           _ttxeEditingcontroller6.text = '';
           _ttxeEditingcontroller7.text = '';
           controller.video = Video();
-          controller.itens = List<Item>();
+          controller.itens = <Item>[];
         });
       } else {
         Get.rawSnackbar(

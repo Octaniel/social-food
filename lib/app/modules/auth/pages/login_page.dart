@@ -20,7 +20,7 @@ class LoginPage extends GetView<AuthController> {
           children: [
             Container(
               child: TextWidget(
-                text: GetPlatform.isWeb?'FEEDFOOD ADMIN':'FEEDFOOD',
+                text: GetPlatform.isWeb ? 'FEEDFOOD ADMIN' : 'FEEDFOOD',
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
@@ -40,7 +40,7 @@ class LoginPage extends GetView<AuthController> {
                         offset: Offset(0, 10))
                   ]),
               width: 300,
-              height: GetPlatform.isWeb?270:312,
+              height: GetPlatform.isWeb ? 270 : 312,
               child: Form(
                 key: formKey,
                 child: Column(
@@ -64,6 +64,7 @@ class LoginPage extends GetView<AuthController> {
                         }),
                     TextFormFieldWidget(
                         label: 'Senha',
+                        onFieldSubmitted: (v) => validarForm(),
                         onChanged: (v) => controller.senha = v,
                         isObscure: true,
                         icon: Icon(
@@ -113,16 +114,17 @@ class LoginPage extends GetView<AuthController> {
                     ),
                     // GetPlatform.isWeb?Text(''):
                     InkWell(
-                      onTap: () {
-                        Get.toNamed(Routes.REGISTRAR);
-                      },
-                      child: Text('Criar Conta', style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 14,
-                        color: Color(0xFF575E63),
-
-                      ),)
-                    ),
+                        onTap: () {
+                          Get.toNamed(Routes.REGISTRAR);
+                        },
+                        child: Text(
+                          'Criar Conta',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 14,
+                            color: Color(0xFF575E63),
+                          ),
+                        )),
                   ],
                 ),
               ),
@@ -153,7 +155,7 @@ class LoginPage extends GetView<AuthController> {
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
         Future.delayed(Duration(seconds: 2), () {
           // Get.offAllNamed(Routes.HOME);
-          GetPlatform.isWeb?Get.offAllNamed(Routes.ADDVIDEOWEB):Get.offAllNamed(Routes.HOME);
+           Get.offAllNamed(Routes.HOME);
         });
       } else {
         Get.rawSnackbar(

@@ -9,7 +9,7 @@ class VideoProvider {
 
   Future<List<Video>> listar(int page, String nome) async {
     final response = await httpfat.get(
-        "${url}video?page=$page&size=5&nome=$nome",
+        "${url}video?page=$page&size=10&nome=$nome",
         headers: <String, String>{"Content-Type": "application/json"});
     if (response.statusCode == 200) {
       var decode = utf8.decode(response.bodyBytes);
@@ -20,9 +20,8 @@ class VideoProvider {
       return listUsuarioModel;
     } else {
       print(response.body);
-      print("object");
     }
-    return List<Video>();
+    return <Video>[];
   }
 
   Future<List<Video>> listarQueGostei(int page, String nome) async {
@@ -37,9 +36,8 @@ class VideoProvider {
       return listUsuarioModel;
     } else {
       print(response.body);
-      print("object");
     }
-    return List<Video>();
+    return <Video>[];
   }
 
   Future<int> totalVideo() async {
@@ -49,7 +47,6 @@ class VideoProvider {
       return int.parse(response.body);
     } else {
       print(response.body);
-      print("object");
     }
     return null;
   }
@@ -61,7 +58,6 @@ class VideoProvider {
     if (response.statusCode == 201) {
       return true;
     } else {
-      print("object");
       return false;
     }
   }
@@ -73,7 +69,16 @@ class VideoProvider {
     if (response.statusCode == 200) {
       return true;
     } else {
-      print("object");
+      return false;
+    }
+  }
+
+  Future<bool> remover(int id) async {
+    final response = await httpfat.delete("${url}video/$id",
+        headers: <String, String>{"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      return true;
+    } else {
       return false;
     }
   }

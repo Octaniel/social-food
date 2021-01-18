@@ -61,9 +61,8 @@ AppBar renderAppBar(bool isDash) {
               tooltip: "Adicionar video",
               icon: Icon(Icons.video_call),
               onPressed: () {
-                GetPlatform.isWeb || GetPlatform.isDesktop
-                    ? Get.toNamed(Routes.ADDVIDEOWEB)
-                    : Get.toNamed(Routes.INSERIRVIDEO);
+                Get.find<HomeController>().itens.clear();
+                Get.toNamed(Routes.ADDVIDEOWEB);
               })
           : Text(''),
     ],

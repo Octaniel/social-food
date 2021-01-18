@@ -102,23 +102,111 @@ class FeedView extends GetView<HomeController> {
                                             child: renderLinkPreview1(video),
                                           ),
                                           Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
                                             children: [
                                               IconButton(
-                                                  tooltip: "Dashboard",
-                                                  icon: Icon(FontAwesomeIcons
-                                                      .chartLine),
+                                                  tooltip: "Editar",
+                                                  icon: Icon(
+                                                    FontAwesomeIcons.pen,
+                                                    color: Colors.blueGrey,
+                                                  ),
                                                   onPressed: () {
-                                                    Get.toNamed(Routes.HOME);
+                                                    controller.video = video;
+                                                    controller.itens =
+                                                        video.itens;
+                                                    Get.toNamed(
+                                                        Routes.ADDVIDEOWEB,
+                                                        arguments: video);
                                                   }),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
                                               IconButton(
-                                                  tooltip: "Dashboard",
-                                                  icon: Icon(FontAwesomeIcons
-                                                      .chartLine),
-                                                  onPressed: () {
-                                                    Get.toNamed(Routes.HOME);
+                                                  tooltip: "Remover",
+                                                  icon: Icon(
+                                                    FontAwesomeIcons.trash,
+                                                    color: Colors.red,
+                                                  ),
+                                                  onPressed: () async {
+                                                    Get.defaultDialog(
+                                                        middleText:
+                                                            "Tens certesa que queres excluir permanentemente este video?",
+                                                        onConfirm: () async {
+                                                          var remover =
+                                                              await controller
+                                                                  .remover(
+                                                                      video.id);
+                                                          if (remover) {
+                                                            Get.rawSnackbar(
+                                                                icon: Icon(
+                                                                    FontAwesomeIcons
+                                                                        .check),
+                                                                duration:
+                                                                    Duration(
+                                                                        seconds:
+                                                                            2),
+                                                                backgroundColor:
+                                                                    Color(
+                                                                        0xFF3CFEB5),
+                                                                messageText:
+                                                                    Text(
+                                                                  'Video removido com sucesso.',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                borderRadius:
+                                                                    10,
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            20,
+                                                                        right:
+                                                                            20,
+                                                                        bottom:
+                                                                            20));
+                                                          } else {
+                                                            Get.rawSnackbar(
+                                                                icon: Icon(
+                                                                  FontAwesomeIcons
+                                                                      .times,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                duration:
+                                                                    Duration(
+                                                                        seconds:
+                                                                            2),
+                                                                backgroundColor:
+                                                                    Color(
+                                                                        0xFFFE3C3C),
+                                                                messageText:
+                                                                    Text(
+                                                                  'Houve erro ao remover o video',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                borderRadius:
+                                                                    10,
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            20,
+                                                                        right:
+                                                                            20,
+                                                                        bottom:
+                                                                            20));
+                                                          }
+                                                        });
                                                   }),
                                             ],
                                           ),
@@ -141,14 +229,8 @@ class FeedView extends GetView<HomeController> {
   }
 
   Widget renderLinkPreview(String link, bool total, Video video) {
-    double width = total ? Get.width : Get.width * .85;
-    double height = total
-        ? Get.height * .4 < 250
-            ? 250
-            : Get.height * .4
-        : Get.height * .23 < 200
-            ? 200
-            : Get.height * .23;
+    double width = total ? Get.width : 300;
+    double height = total ? 350 : 230;
 
     String provider = nomeServer(link), videoID = idVideo(link);
     var htmlDataVimeo =
@@ -187,6 +269,8 @@ class FeedView extends GetView<HomeController> {
                       )
                     : Image.network(
                         "https://img.youtube.com/vi/$videoID/0.jpg",
+                        width: width,
+                        height: height,
                         fit: BoxFit.contain,
                       )
                 : provider == 'facebook'
