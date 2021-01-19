@@ -78,9 +78,9 @@ class FeedView extends GetView<HomeController> {
                               Container(
                                   margin: EdgeInsets.symmetric(horizontal: 10),
                                   width: Get.width,
-                                  height: Get.height * .30 < 300
-                                      ? 300
-                                      : Get.height * .30,
+                                  height: Get.height * .28 < 280
+                                      ? 280
+                                      : Get.height * .28,
                                   child: Card(
                                       color: isDarkMode
                                           ? Colors.grey[800]
@@ -127,6 +127,7 @@ class FeedView extends GetView<HomeController> {
                                                   ),
                                                   onPressed: () async {
                                                     Get.defaultDialog(
+                                                        title: "Apagar video",
                                                         middleText:
                                                             "Tens certesa que queres excluir permanentemente este video?",
                                                         onConfirm: () async {
@@ -206,20 +207,28 @@ class FeedView extends GetView<HomeController> {
                                                                         bottom:
                                                                             20));
                                                           }
+                                                          controller
+                                                              .listarVideo(
+                                                                  refresh:
+                                                                      false);
+                                                          Future.delayed(
+                                                              Duration(
+                                                                  seconds: 2),
+                                                              () {
+                                                            Navigator.pop(
+                                                                Get.context);
+                                                          });
                                                         });
                                                   }),
                                             ],
                                           ),
                                         ],
                                       ))),
-                              SizedBox(
-                                height: 25,
-                              ),
                             ],
                           );
                         },
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
+                            crossAxisCount: 4),
                       ),
                     )),
         );
@@ -688,7 +697,7 @@ class FeedView extends GetView<HomeController> {
   }
 
   Widget renderLinkPreview1(Video video) {
-    if (GetPlatform.isWeb) {
+    if (GetPlatform.isWeb && GetPlatform.isDesktop) {
       return renderLinkPreview(video.url, false, null);
     }
     return FlutterLinkPreview(
