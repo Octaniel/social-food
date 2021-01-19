@@ -697,7 +697,7 @@ class FeedView extends GetView<HomeController> {
   }
 
   Widget renderLinkPreview1(Video video) {
-    if (GetPlatform.isWeb && GetPlatform.isDesktop) {
+    if (GetPlatform.isWeb || GetPlatform.isDesktop) {
       return renderLinkPreview(video.url, false, null);
     }
     return FlutterLinkPreview(

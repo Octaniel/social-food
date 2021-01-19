@@ -6,6 +6,7 @@ import 'package:socialfood/app/data/model/Item.dart';
 import 'package:socialfood/app/data/model/comentario.dart';
 import 'package:socialfood/app/data/model/gosto.dart';
 import 'package:socialfood/app/data/model/pessoa.dart';
+import 'package:socialfood/app/data/model/usuario.dart';
 import 'package:socialfood/app/data/model/video.dart';
 import 'package:socialfood/app/data/repository/auth_repository.dart';
 import 'package:socialfood/app/data/repository/comentario_repository.dart';
@@ -27,6 +28,10 @@ class HomeController extends GetxController {
   int page = 0;
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
+
+  int pageUsers = 0;
+  RefreshController refreshControllerUsers =
+      RefreshController(initialRefresh: false);
   final PageController controller = PageController(
     initialPage: 0,
   );
@@ -38,9 +43,11 @@ class HomeController extends GetxController {
   final _videos = <Video>[].obs;
   final _videosFiltrado = <Video>[].obs;
   final _comentarios = <Comentario>[].obs;
+  final _usuarios = <Usuario>[].obs;
   final _usuariosResumo = <Map<String, Object>>[].obs;
   final _comentario = Comentario().obs;
   final _video = Video().obs;
+  final _usuario = Usuario().obs;
   final _permitirComentarios = false.obs;
   final _color = Colors.red.obs;
   final _descricao = ''.obs;
@@ -50,11 +57,25 @@ class HomeController extends GetxController {
   final _totalUsuario = 0.obs;
   final _totalUsuarioUltimo30Dias = 0.obs;
   final _rf1 = 0.obs;
+  var searchVideo = '';
+  var searchUsuario = '';
 
   get rf1 => _rf1.value;
 
   set rf1(value) {
     _rf1.value = value;
+  }
+
+  Usuario get usuario => _usuario.value;
+
+  set usuario(Usuario value) {
+    _usuario.value = value;
+  }
+
+  get usuarios => _usuarios.value;
+
+  set usuarios(value) {
+    _usuarios.assignAll(value);
   }
 
   List<Map<String, Object>> get usuariosResumo => _usuariosResumo.value;
@@ -179,7 +200,7 @@ class HomeController extends GetxController {
       var list = List<Video>();
       carregandoRefresh = true;
       page += 1;
-      list = await videoRepository.listar(page, texteditingController.text);
+      list = await videoRepository.listar(page, searchVideo);
       videos.addAll(list);
       videosFiltrado = videos;
       carregandoRefresh = false;
@@ -192,12 +213,43 @@ class HomeController extends GetxController {
     } else {
       page = 0;
       carregando = true;
-      videos = await videoRepository.listar(page, texteditingController.text);
+      videos = await videoRepository.listar(page, searchVideo);
       // page += 1;
       videosFiltrado = videos;
       carregando = false;
       refreshController.loadComplete();
       refreshController.refreshCompleted();
+      // refreshController.loadComplete();
+      update();
+      mudarCor();
+    }
+  }
+
+  listarUsuario({bool refresh = false}) async {
+    if (refresh) {
+      var list = <Usuario>[];
+      carregandoRefresh = true;
+      pageUsers += 1;
+      list = await authRepository.listar(pageUsers, searchUsuario);
+      usuarios.addAll(list);
+      carregandoRefresh = false;
+      if (list.length == 0) {
+        refreshControllerUsers.loadNoData();
+      } else {
+        refreshControllerUsers.loadComplete();
+      }
+      update();
+    } else {
+      pageUsers = 0;
+      carregando = true;
+      usuarios =
+          await authRepository.listar(pageUsers, searchUsuario);
+      print(usuarios);
+      // page += 1;
+      carregando = false;
+      print(carregando);
+      refreshControllerUsers.loadComplete();
+      refreshControllerUsers.refreshCompleted();
       // refreshController.loadComplete();
       update();
       mudarCor();

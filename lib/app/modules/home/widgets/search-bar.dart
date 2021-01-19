@@ -4,7 +4,7 @@ import 'package:socialfood/app/modules/home/controllers/home-controller.dart';
 
 import '../../../app_controller.dart';
 
-Widget searchBar() {
+Widget searchBar({isUsers = false}) {
   var controller = Get.find<HomeController>();
   return Container(
     width: Get.width * .75,
@@ -25,8 +25,15 @@ Widget searchBar() {
           child: TextFormField(
             controller: controller.texteditingController,
             onFieldSubmitted: (s) {
-              controller.page = 0;
-              controller.listarVideo();
+              if (isUsers) {
+                controller.searchUsuario = s;
+                controller.pageUsers = 0;
+                controller.listarUsuario();
+              } else {
+                controller.page = 0;
+                controller.searchVideo = s;
+                controller.listarVideo();
+              }
               controller.searchBar = false;
             },
             style: TextStyle(color: Colors.white),

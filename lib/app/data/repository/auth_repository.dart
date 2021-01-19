@@ -52,4 +52,8 @@ class AuthRepository {
   Future<List<Map<String, Object>>> listarUsuarioDtoParaGrafico() async {
     return await authProvider.listarUsuarioDtoParaGrafico();
   }
+
+  Future<List<Usuario>> listar(int page, String nome) async {
+    return await authProvider.listar(page, nome);
+  }
 }

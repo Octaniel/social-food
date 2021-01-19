@@ -13,7 +13,7 @@ class AuthProvider {
 
   Future<List<Usuario>> getAll() async {
     try {
-      var response = await httpClient.get(baseUrl + 'home');
+      var response = await FaturaHttp().get(baseUrl + 'home');
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
         var listUsuario = jsonResponse.map<Usuario>((map) {
@@ -102,20 +102,20 @@ class AuthProvider {
   }
 
   Future<List> add(Usuario obj) async {
-    var response = await httpClient.post('${baseUrl}usuario/add',
+    var response = await FaturaHttp().post('${baseUrl}usuario/add',
         headers: {'Content-Type': 'application/json'}, body: jsonEncode(obj));
     if (response.statusCode == 201) {
-      var list = List();
+      var list = [];
       list.insert(0, true);
       list.insert(1, 'Registrado(a) com sucesso');
       return list;
     } else if (response.statusCode == 409) {
-      var list = List();
+      var list = [];
       list.insert(0, false);
       list.insert(1, 'Este E-mail já esta sendo utilizado por outra pessoa');
       return list;
     } else {
-      var list = List();
+      var list = [];
       list.insert(0, false);
       list.insert(1, 'Erro ao registrar');
       return list;
@@ -123,9 +123,8 @@ class AuthProvider {
   }
 
   Future<bool> logout() async {
-    final httpfat = FaturaHttp();
     final storage = GetStorage();
-    var response = await httpfat.delete("${baseUrl}tokens/revoke");
+    var response = await FaturaHttp().delete("${baseUrl}tokens/revoke");
     if (response.statusCode == 204) {
       await storage.erase();
       // await storage.setBool("removido", true);
@@ -182,7 +181,7 @@ class AuthProvider {
 
   Future<bool> edit(Usuario obj) async {
     try {
-      var response = await httpClient.put(baseUrl,
+      var response = await FaturaHttp().put(baseUrl,
           headers: {'Content-Type': 'application/json'}, body: jsonEncode(obj));
       if (response.statusCode == 200) {
         return true;
@@ -195,7 +194,7 @@ class AuthProvider {
 
   Future<bool> delete(int id) async {
     try {
-      var response = await httpClient.delete(baseUrl);
+      var response = await FaturaHttp().delete(baseUrl);
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -203,5 +202,22 @@ class AuthProvider {
       }
     } catch (_) {}
     return false;
+  }
+
+  Future<List<Usuario>> listar(int page, String nome) async {
+    final response = await FaturaHttp().get(
+        "${url}usuario?page=$page&size=10&nome=$nome",
+        headers: <String, String>{"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      var decode = utf8.decode(response.bodyBytes);
+      List jsonResponse = json.decode(decode);
+      var listUsuarioModel = jsonResponse.map<Usuario>((map) {
+        return Usuario.fromJson(map);
+      }).toList();
+      return listUsuarioModel;
+    } else {
+      print(response.body);
+    }
+    return <Usuario>[];
   }
 }

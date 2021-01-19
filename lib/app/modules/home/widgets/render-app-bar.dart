@@ -8,7 +8,8 @@ import 'package:socialfood/app/widgets/text-widget.dart';
 
 import '../../../app_controller.dart';
 
-AppBar renderAppBar(bool isDash) {
+AppBar renderAppBar(bool isDash, {isUsers = false}) {
+  var homeController = Get.find<HomeController>();
   var find = Get.find<AppController>();
   return AppBar(
     elevation: 0,
@@ -27,11 +28,23 @@ AppBar renderAppBar(bool isDash) {
             ? TextWidget(
                 text: 'FeedFood(BETA)',
               )
-            : searchBar();
+            : searchBar(isUsers: isUsers);
       },
     ),
     actions: [
-      if (!isDash)
+      if (!isUsers)
+        Tooltip(
+          message: "Lista de Úsuarios",
+          child: IconButton(
+              icon: Icon(FontAwesomeIcons.users),
+              onPressed: () {
+                homeController.searchBar = false;
+                homeController.texteditingController.text =
+                    homeController.searchUsuario;
+                Get.toNamed(Routes.USERS);
+              }),
+        ),
+      if (!isDash || isUsers)
         GetBuilder<HomeController>(
           builder: (controller) {
             return !controller.searchBar
@@ -41,19 +54,25 @@ AppBar renderAppBar(bool isDash) {
                     onPressed: () => controller.searchBar = true)
                 : Text('');
           },
-        )
-      else
-        Tooltip(
-          message: "Lista de Videos",
-          child: IconButton(
-              icon: Icon(FontAwesomeIcons.film),
-              onPressed: () => Get.toNamed(Routes.FEED)),
         ),
-      if (!isDash)
+      if (isDash || isUsers)
+        Tooltip(
+            message: "Lista de Videos",
+            child: IconButton(
+              icon: Icon(FontAwesomeIcons.film),
+              onPressed: () {
+                homeController.searchBar = false;
+                homeController.texteditingController.text =
+                    homeController.searchVideo;
+                Get.toNamed(Routes.FEED);
+              },
+            )),
+      if (!isDash || isUsers)
         IconButton(
             tooltip: "Dashboard",
             icon: Icon(FontAwesomeIcons.chartLine),
             onPressed: () {
+              homeController.searchBar = false;
               Get.toNamed(Routes.HOME);
             }),
       find.usuario.grupo == 'administrador'
@@ -61,6 +80,7 @@ AppBar renderAppBar(bool isDash) {
               tooltip: "Adicionar video",
               icon: Icon(Icons.video_call),
               onPressed: () {
+                homeController.searchBar = false;
                 Get.find<HomeController>().itens.clear();
                 Get.toNamed(Routes.ADDVIDEOWEB);
               })

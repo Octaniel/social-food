@@ -11,4 +11,5 @@ abstract class Routes {
   static const ADDVIDEOWEB = '/addvideoweb';
   static const MYMATERIALAPP = '/myMaterialApp';
   static const FEED = '/feed';
+  static const USERS = '/users';
 }

@@ -11,6 +11,7 @@ import 'package:socialfood/app/modules/home/pages/add_video_page.dart';
 import 'package:socialfood/app/modules/home/pages/feed-view.dart';
 import 'package:socialfood/app/modules/home/pages/home-view.dart';
 import 'package:socialfood/app/modules/home/pages/splash_page.dart';
+import 'package:socialfood/app/modules/home/pages/users_page.dart';
 import 'package:socialfood/app/modules/perfil/pages/perfil_page.dart';
 import 'package:socialfood/app/modules/perfil/perfil_binding.dart';
 
@@ -37,6 +38,11 @@ abstract class AppPages {
     GetPage(
         name: Routes.FEED,
         page: () => FeedView(),
+        binding: HomeBinding(),
+        transition: Transition.downToUp),
+    GetPage(
+        name: Routes.USERS,
+        page: () => UsersPage(),
         binding: HomeBinding(),
         transition: Transition.downToUp),
     // GetPage(name: Routes.MYMATERIALAPP, page: () => MyMaterialApp(), binding: HomeBinding(), transition: Transition.downToUp),
