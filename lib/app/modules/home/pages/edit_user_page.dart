@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:socialfood/app/app_controller.dart';
 import 'package:socialfood/app/modules/home/controllers/home-controller.dart';
+import 'package:socialfood/app/modules/home/widgets/render-app-bar.dart';
 import 'package:socialfood/app/routes/app_routes.dart';
 import 'package:socialfood/app/widgets/text-form-widget.dart';
 import 'package:socialfood/app/widgets/text-widget.dart';
@@ -22,6 +23,7 @@ class EditUserPage extends GetView<HomeController> {
     _ttxeEditingcontroller4.text = controller.usuario.pessoa.email;
 
     return Scaffold(
+      appBar: renderAppBar(true, isUsers: true),
       body: Center(
         child: ListView(
           children: [
@@ -192,7 +194,7 @@ class EditUserPage extends GetView<HomeController> {
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
         Future.delayed(Duration(seconds: 2), () {
-          Get.toNamed(Routes.LOGIN);
+          Navigator.pop(Get.context);
         });
       } else {
         Get.rawSnackbar(

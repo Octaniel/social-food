@@ -6,16 +6,22 @@ class Usuario {
   String senha;
   Pessoa pessoa;
   String grupo;
+  DateTime dataCriacao;
+  DateTime dataAlteracao;
 
-  Usuario(
-      {this.id,
-      this.nome,
-      this.senha, this.grupo,});
+  Usuario({
+    this.id,
+    this.nome,
+    this.senha,
+    this.grupo,
+  });
 
   Usuario.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nome = json['nome'];
     senha = json['senha'];
+    dataCriacao = DateTime.parse(json['dataCriacao']);
+    dataAlteracao = DateTime.parse(json['dataAlteracao']);
     grupo = json['grupo'];
     pessoa = Pessoa.fromJson(json['pessoa']);
   }

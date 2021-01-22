@@ -33,7 +33,7 @@ class FeedView extends GetView<HomeController> {
                       child: TextWidget(
                         text: controller.texteditingController.text.isEmpty
                             ? 'Nenhum vídeo cadastrado no momento'
-                            : 'Nenhum vídeo relaoicnado com a sua pesquisa no momento',
+                            : 'Nenhum vídeo relacionado com a sua pesquisa no momento',
                       ),
                     )
                   : SmartRefresher(

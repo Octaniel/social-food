@@ -102,8 +102,8 @@ class AuthProvider {
   }
 
   Future<List> add(Usuario obj) async {
-    var response = await http.post('${baseUrl}usuario/add',
-        headers: {'Content-Type': 'application/json'}, body: jsonEncode(obj));
+    var response = await httpClient.post('${baseUrl}usuario/add',
+        headers: {'Content-Type': 'application/json'}, body: jsonEncode(obj.toJson()));
     if (response.statusCode == 201) {
       var list = [];
       list.insert(0, true);

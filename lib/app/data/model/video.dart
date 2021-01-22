@@ -19,11 +19,7 @@ class Video {
   DateTime dataPublicacao;
   List<Item> itens;
 
-  Video(
-      {this.id,
-      this.url,
-      this.nome,
-      this.pessoa,this.descricao});
+  Video({this.id, this.url, this.nome, this.pessoa, this.descricao});
 
   Video.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -34,11 +30,19 @@ class Video {
     preparo = json['preparo'];
     canalLink = json['canalLink'];
     pageLink = json['pageLink'];
-    pessoa = Pessoa.fromJson(json['pessoa']);
+    // pessoa = Pessoa.fromJson(json['pessoa']);
     dataPublicacao = DateTime.parse(json['dataCriacao']);
-    listaDePessoasQueGostaram = (json['listaDePessoasQueGostaram'] as List==null?List():json['listaDePessoasQueGostaram'] as List).map((e) => Pessoa.fromJson(e)).toList();
-    voceGostou = listaDePessoasQueGostaram.contains(Get.find<AppController>().usuario.pessoa);
-    itens = (json['itens'] as List==null?List():json['itens'] as List).map((e) => Item.fromJson(e)).toList();
+    listaDePessoasQueGostaram =
+        (json['listaDePessoasQueGostaram'] as List == null
+                ? List()
+                : json['listaDePessoasQueGostaram'] as List)
+            .map((e) => Pessoa.fromJson(e))
+            .toList();
+    voceGostou = listaDePessoasQueGostaram
+        .contains(Get.find<AppController>().usuario.pessoa);
+    itens = (json['itens'] as List == null ? List() : json['itens'] as List)
+        .map((e) => Item.fromJson(e))
+        .toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -52,7 +56,8 @@ class Video {
     data['canalLink'] = this.canalLink;
     data['pageLink'] = this.pageLink;
     data['pessoa'] = pessoa.toJsonId();
-    data['itens'] = itens!=null?itens.map((e) => e.toJson()).toList():null;
+    data['itens'] =
+        itens != null ? itens.map((e) => e.toJson()).toList() : null;
     return data;
   }
 
