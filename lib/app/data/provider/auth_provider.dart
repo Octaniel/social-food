@@ -102,12 +102,15 @@ class AuthProvider {
   }
 
   Future<List> add(Usuario obj) async {
-    var response = await FaturaHttp().post('${baseUrl}usuario/add',
+    var response = await http.post('${baseUrl}usuario/add',
         headers: {'Content-Type': 'application/json'}, body: jsonEncode(obj));
     if (response.statusCode == 201) {
       var list = [];
       list.insert(0, true);
-      list.insert(1, 'Registrado(a) com sucesso');
+      if (obj.id == null)
+        list.insert(1, 'Registrado(a) com sucesso');
+      else
+        list.insert(1, 'Atualizado(a) com sucesso');
       return list;
     } else if (response.statusCode == 409) {
       var list = [];
@@ -117,7 +120,10 @@ class AuthProvider {
     } else {
       var list = [];
       list.insert(0, false);
-      list.insert(1, 'Erro ao registrar');
+      if (obj.id == null)
+        list.insert(1, 'Erro ao registrar');
+      else
+        list.insert(1, 'Erro ao atualizar');
       return list;
     }
   }
@@ -219,5 +225,15 @@ class AuthProvider {
       print(response.body);
     }
     return <Usuario>[];
+  }
+
+  Future<bool> remover(int id) async {
+    final response = await FaturaHttp().delete("${url}usuario/$id",
+        headers: <String, String>{"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

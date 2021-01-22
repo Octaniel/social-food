@@ -56,4 +56,8 @@ class AuthRepository {
   Future<List<Usuario>> listar(int page, String nome) async {
     return await authProvider.listar(page, nome);
   }
+
+  Future<bool> remover(int id) async {
+    return await authProvider.remover(id);
+  }
 }

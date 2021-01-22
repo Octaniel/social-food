@@ -6,7 +6,7 @@ final String ec2 =
     "http://ec2-15-228-50-178.sa-east-1.compute.amazonaws.com:8080/";
 final String ebt =
     "http://feedfood-env.eba-eimzfix3.sa-east-1.elasticbeanstalk.com/";
-final String url = ebt;
+final String url = url1;
 
 String decoder(String body) {
   body = body.replaceAll('Ã§', 'ç');

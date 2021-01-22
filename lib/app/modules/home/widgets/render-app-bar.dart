@@ -75,16 +75,14 @@ AppBar renderAppBar(bool isDash, {isUsers = false}) {
               homeController.searchBar = false;
               Get.toNamed(Routes.HOME);
             }),
-      find.usuario.grupo == 'administrador'
-          ? IconButton(
-              tooltip: "Adicionar video",
-              icon: Icon(Icons.video_call),
-              onPressed: () {
-                homeController.searchBar = false;
-                Get.find<HomeController>().itens.clear();
-                Get.toNamed(Routes.ADDVIDEOWEB);
-              })
-          : Text(''),
+      IconButton(
+          tooltip: "Adicionar video",
+          icon: Icon(Icons.video_call),
+          onPressed: () {
+            homeController.searchBar = false;
+            Get.find<HomeController>().itens.clear();
+            Get.toNamed(Routes.ADDVIDEOWEB);
+          })
     ],
   );
 }

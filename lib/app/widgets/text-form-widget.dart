@@ -8,6 +8,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final bool isObscure;
   final Icon icon;
   final TextInputType inputType;
+  final TextEditingController controller;
   final String Function(String value) validator;
 
   const TextFormFieldWidget(
@@ -16,6 +17,7 @@ class TextFormFieldWidget extends StatelessWidget {
       this.onFieldSubmitted,
       this.isObscure,
       this.icon,
+      this.controller,
       this.inputType,
       this.validator});
 
@@ -26,6 +28,7 @@ class TextFormFieldWidget extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.grey[100]))),
       child: TextFormField(
+        controller: controller,
         onFieldSubmitted: onFieldSubmitted,
         onChanged: onChanged,
         obscureText: isObscure,

@@ -59,6 +59,7 @@ class HomeController extends GetxController {
   final _rf1 = 0.obs;
   var searchVideo = '';
   var searchUsuario = '';
+  // var usuario1 = Usuario();
 
   get rf1 => _rf1.value;
 
@@ -242,8 +243,7 @@ class HomeController extends GetxController {
     } else {
       pageUsers = 0;
       carregando = true;
-      usuarios =
-          await authRepository.listar(pageUsers, searchUsuario);
+      usuarios = await authRepository.listar(pageUsers, searchUsuario);
       print(usuarios);
       // page += 1;
       carregando = false;
@@ -348,6 +348,10 @@ class HomeController extends GetxController {
     return await videoRepository.remover(id);
   }
 
+  Future<bool> removerUsuario(int id) async {
+    return await authRepository.remover(id);
+  }
+
   Future<void> listarUsuarioDtoParaGrafico() async {
     usuariosResumo = await authRepository.listarUsuarioDtoParaGrafico();
     rf1 = rf1 + 1;
@@ -360,6 +364,10 @@ class HomeController extends GetxController {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  Future<List<dynamic>> saveUser() async {
+    return await authRepository.add(usuario);
   }
 
   @override

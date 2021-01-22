@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:socialfood/app/data/model/usuario.dart';
 import 'package:socialfood/app/modules/home/controllers/home-controller.dart';
 import 'package:socialfood/app/modules/home/widgets/render-app-bar.dart';
+import 'package:socialfood/app/routes/app_routes.dart';
 import 'package:socialfood/app/widgets/loader-widget.dart';
 import 'package:socialfood/app/widgets/text-widget.dart';
 
@@ -126,10 +127,9 @@ class UsersPage extends GetView<HomeController> {
                                                   color: Colors.blueGrey,
                                                 ),
                                                 onPressed: () {
-                                                  // controller.usuario = usuario;
-                                                  // Get.toNamed(
-                                                  //     Routes.ADDVIDEOWEB,
-                                                  //     arguments: usuario);
+                                                  controller.usuario = usuario;
+                                                  Get.toNamed(
+                                                      Routes.USERUPDATE);
                                                 }),
                                             IconButton(
                                                 tooltip: "Remover",
@@ -141,85 +141,86 @@ class UsersPage extends GetView<HomeController> {
                                                   Get.defaultDialog(
                                                       title: "Apagar video",
                                                       middleText:
-                                                          "Tens certesa que queres excluir permanentemente este video?",
+                                                          "Tens certesa que queres excluir permanentemente este usuario?",
                                                       onConfirm: () async {
-                                                        //   var remover =
-                                                        //       await controller
-                                                        //           .remover(
-                                                        //               usuario.id);
-                                                        //   if (remover) {
-                                                        //     Get.rawSnackbar(
-                                                        //         icon: Icon(
-                                                        //             FontAwesomeIcons
-                                                        //                 .check),
-                                                        //         duration:
-                                                        //             Duration(
-                                                        //                 seconds:
-                                                        //                     2),
-                                                        //         backgroundColor:
-                                                        //             Color(
-                                                        //                 0xFF3CFEB5),
-                                                        //         messageText: Text(
-                                                        //           'Video removido com sucesso.',
-                                                        //           style: TextStyle(
-                                                        //               color: Colors
-                                                        //                   .white,
-                                                        //               fontSize:
-                                                        //                   15,
-                                                        //               fontWeight:
-                                                        //                   FontWeight
-                                                        //                       .bold),
-                                                        //         ),
-                                                        //         borderRadius: 10,
-                                                        //         margin: EdgeInsets
-                                                        //             .only(
-                                                        //                 left: 20,
-                                                        //                 right: 20,
-                                                        //                 bottom:
-                                                        //                     20));
-                                                        //   } else {
-                                                        //     Get.rawSnackbar(
-                                                        //         icon: Icon(
-                                                        //           FontAwesomeIcons
-                                                        //               .times,
-                                                        //           color: Colors
-                                                        //               .white,
-                                                        //         ),
-                                                        //         duration:
-                                                        //             Duration(
-                                                        //                 seconds:
-                                                        //                     2),
-                                                        //         backgroundColor:
-                                                        //             Color(
-                                                        //                 0xFFFE3C3C),
-                                                        //         messageText: Text(
-                                                        //           'Houve erro ao remover o video',
-                                                        //           style: TextStyle(
-                                                        //               color: Colors
-                                                        //                   .white,
-                                                        //               fontSize:
-                                                        //                   15,
-                                                        //               fontWeight:
-                                                        //                   FontWeight
-                                                        //                       .bold),
-                                                        //         ),
-                                                        //         borderRadius: 10,
-                                                        //         margin: EdgeInsets
-                                                        //             .only(
-                                                        //                 left: 20,
-                                                        //                 right: 20,
-                                                        //                 bottom:
-                                                        //                     20));
-                                                        //   }
-                                                        //   controller.listarVideo(
-                                                        //       refresh: false);
-                                                        //   Future.delayed(
-                                                        //       Duration(
-                                                        //           seconds: 2),
-                                                        //       () {
-                                                        //     Navigator.pop(
-                                                        //         Get.context);
-                                                        //   });
+                                                        var remover =
+                                                            await controller
+                                                                .removerUsuario(
+                                                                    usuario.id);
+                                                        if (remover) {
+                                                          Get.rawSnackbar(
+                                                              icon: Icon(
+                                                                  FontAwesomeIcons
+                                                                      .check),
+                                                              duration:
+                                                                  Duration(
+                                                                      seconds:
+                                                                          2),
+                                                              backgroundColor:
+                                                                  Color(
+                                                                      0xFF3CFEB5),
+                                                              messageText: Text(
+                                                                'Usuario removido com sucesso.',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              borderRadius: 10,
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      left: 20,
+                                                                      right: 20,
+                                                                      bottom:
+                                                                          20));
+                                                        } else {
+                                                          Get.rawSnackbar(
+                                                              icon: Icon(
+                                                                FontAwesomeIcons
+                                                                    .times,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              duration:
+                                                                  Duration(
+                                                                      seconds:
+                                                                          2),
+                                                              backgroundColor:
+                                                                  Color(
+                                                                      0xFFFE3C3C),
+                                                              messageText: Text(
+                                                                'Houve erro ao remover o usuario',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              borderRadius: 10,
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      left: 20,
+                                                                      right: 20,
+                                                                      bottom:
+                                                                          20));
+                                                        }
+                                                        controller
+                                                            .listarUsuario(
+                                                                refresh: false);
+                                                        Future.delayed(
+                                                            Duration(
+                                                                seconds: 2),
+                                                            () {
+                                                          Navigator.pop(
+                                                              Get.context);
+                                                        });
                                                       });
                                                 }),
                                           ],

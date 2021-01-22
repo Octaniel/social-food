@@ -8,6 +8,7 @@ import 'package:socialfood/app/modules/favoritos/favorito_binding.dart';
 import 'package:socialfood/app/modules/favoritos/pages/favorito_page.dart';
 import 'package:socialfood/app/modules/home/home_binding.dart';
 import 'package:socialfood/app/modules/home/pages/add_video_page.dart';
+import 'package:socialfood/app/modules/home/pages/edit_user_page.dart';
 import 'package:socialfood/app/modules/home/pages/feed-view.dart';
 import 'package:socialfood/app/modules/home/pages/home-view.dart';
 import 'package:socialfood/app/modules/home/pages/splash_page.dart';
@@ -43,6 +44,11 @@ abstract class AppPages {
     GetPage(
         name: Routes.USERS,
         page: () => UsersPage(),
+        binding: HomeBinding(),
+        transition: Transition.downToUp),
+    GetPage(
+        name: Routes.USERUPDATE,
+        page: () => EditUserPage(),
         binding: HomeBinding(),
         transition: Transition.downToUp),
     // GetPage(name: Routes.MYMATERIALAPP, page: () => MyMaterialApp(), binding: HomeBinding(), transition: Transition.downToUp),

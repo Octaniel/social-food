@@ -12,4 +12,5 @@ abstract class Routes {
   static const MYMATERIALAPP = '/myMaterialApp';
   static const FEED = '/feed';
   static const USERS = '/users';
+  static const USERUPDATE = '/userUpdate';
 }
